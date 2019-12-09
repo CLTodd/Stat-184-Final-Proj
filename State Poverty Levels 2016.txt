@@ -6,7 +6,7 @@ Arkansas,17.2
 California,14.3
 Colorado,11
 Connecticut,9.8
-Deleware,11.7
+Delaware,11.7
 District of Columbia,18.6
 Florida,14.7
 Georgia,16
