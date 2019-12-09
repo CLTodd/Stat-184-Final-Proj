@@ -27,14 +27,24 @@ Explanations, definitions, and clarifications of variable names and the codes us
 CrimeMotiveStateRaw <- openxlsx::read.xlsx(xlsxFile = "Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx")
 InequalityAndCrime538 <- readr::read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/hate_crimes.csv")
 PovertyByState <- readr::read_csv("State Poverty Levels 2016.txt")
-ReadMe538 <- read_file("https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/README.md")
 
 ```
 
 
-
 ```{r}
-# Investigating the CrimeMotivesStateRaw Table
+# Inspecting Inequality and Crime data from fivethirtyeight
+str(InequalityAndCrime538)
+summary(InequalityAndCrime538)
+head(InequalityAndCrime538)
+# This table is already clean and tidy, although later on some variable names will be changed and some proportions will be converted to percents for convenience.
+
+# Inspecting Poverty Rate by State data
+str(PovertyByState)
+summary(PovertyByState)
+head(PovertyByState)
+# This table is already tidy, although later on some variable names might be changes for convention's sake.
+
+# Inspecting the CrimeMotivesStateRaw Table
 str(CrimeMotiveStateRaw)
 summary(CrimeMotiveStateRaw)
 head(CrimeMotiveStateRaw, 12)
@@ -67,18 +77,3 @@ rownames(CrimeMotiveState) <- 1:nrow(CrimeMotiveState) # ensuring rows are re-in
 head(CrimeMotiveState, 6) #checking results
 ```
 
-```{r}
-#Displaying the Data
-PersonsExonerated
-
-
-
-state.abb
-state.area
-state.center
-state.division
-state.name
-state.region
-state
-
-```
