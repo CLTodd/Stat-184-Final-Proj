@@ -8,7 +8,7 @@ Become acquainted with the data
 Explore intuition for the research questions before imposing formal structure (e.g., inferential or predictive dels)
 Discover features in the data that influence modeling decisions
 
-```{r}
+```{r, message=FALSE}
 #Cleaning Environment
 rm(list = ls())
 
@@ -17,15 +17,33 @@ library(openxlsx)
 library(DataComputing)
 library(tidyverse)
 ```
+3
+spread or gather operation (or equivalent):
+use of regular expressions: 
+use of reduction and/or transformation functions: 
+use of user-defined functions: 
+use of loops and/or control flow: 
+use of machine learning
+
+3
+use of mulitple different geoms:  
+use of multiple aesthetics:  
+use of layered graphics:  
+use of leaflet maps:  
+use of decision tree or dendogram results:    
+
+
 
 mention 538 and https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrime
 
 Explanations, definitions, and clarifications of variable names and the codes used for the variables were provided by the [read me in FiveThirtyEight's repo glossary page](https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrime).
 
-```{r}
+```{r, message=FALSE}
 #Importing the Data
 CrimeMotiveStateRaw <- openxlsx::read.xlsx(xlsxFile = "Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx")
+
 InequalityAndCrime538 <- readr::read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/hate_crimes.csv")
+
 PovertyByState <- readr::read_csv("State Poverty Levels 2016.txt")
 
 ```
@@ -33,19 +51,16 @@ PovertyByState <- readr::read_csv("State Poverty Levels 2016.txt")
 
 ```{r}
 # Inspecting Inequality and Crime data from fivethirtyeight
-str(InequalityAndCrime538)
 summary(InequalityAndCrime538)
 head(InequalityAndCrime538)
 # This table is already clean and tidy, although later on some variable names will be changed and some proportions will be converted to percents for convenience.
 
 # Inspecting Poverty Rate by State data
-str(PovertyByState)
 summary(PovertyByState)
 head(PovertyByState)
 # This table is already tidy, although later on some variable names might be changes for convention's sake.
 
 # Inspecting the CrimeMotivesStateRaw Table
-str(CrimeMotiveStateRaw)
 summary(CrimeMotiveStateRaw)
 head(CrimeMotiveStateRaw, 12)
 
@@ -70,10 +85,32 @@ CrimeMotiveState <-
          sexualOrientation = as.numeric(sexualOrientation),
          disability = as.numeric(disability),
          gender = as.numeric(gender),
-         genderIdentity = as.numeric(genderIdentity))
+         genderIdentity = as.numeric(genderIdentity),
+         totalHateCrimes = (race + religion + sexualOrientation + disability + gender + genderIdentity)) %>%
+  select(-c(Flag))
  
-CrimeMotiveState <- CrimeMotiveState[-c(51:53),-c(2,3,10)] # removing unneccessary footer rows and empty columns
+CrimeMotiveState <- CrimeMotiveState[-c(51:53),-c(2,3)] # removing unneccessary footer rows and empty columns
 rownames(CrimeMotiveState) <- 1:nrow(CrimeMotiveState) # ensuring rows are re-indexed appropriately
 head(CrimeMotiveState, 6) #checking results
 ```
+```{r}
+# Joining all data
+# First, joining the smaller data sets to make sure everything goes smoothly
 
+PovertyByState <-
+  rename(PovertyByState, state = State)
+
+CrimeMotivePoverty <-
+  dplyr::full_join(PovertyByState, CrimeMotiveState, by = "state")
+
+#Inspecting Join
+head(CrimeMotivePoverty)
+nrow(CrimeMotivePoverty)
+
+Master <-
+  full_join(CrimeMotivePoverty, InequalityAndCrime538, by = "state")
+head(Master)
+nrow(Master)
+names(Master)
+  
+```
