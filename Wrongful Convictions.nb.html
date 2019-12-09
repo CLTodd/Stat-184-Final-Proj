@@ -1767,42 +1767,102 @@ library(tidyverse)</code></pre>
 <p>Explanations, definitions, and clarifications of variable names and the codes used for the variables were provided by the <a href="https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrime">read me in FiveThirtyEight’s repo glossary page</a>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0ltcG9ydGluZyB0aGUgRGF0YVxuQ3JpbWVNb3RpdmVTdGF0ZSA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJUYWJsZV8xM19IYXRlX0NyaW1lX0luY2lkZW50c19wZXJfQmlhc19Nb3RpdmF0aW9uX2FuZF9RdWFydGVyX2J5X1N0YXRlX2FuZF9BZ2VuY3lfMjAxNi54bHN4XCIpXG5JbmVxdWFsaXR5QW5kQ3JpbWU1MzggPC0gcmVhZHI6OnJlYWRfY3N2KFwiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZpdmV0aGlydHllaWdodC9kYXRhL21hc3Rlci9oYXRlLWNyaW1lcy9oYXRlX2NyaW1lcy5jc3ZcIilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0ltcG9ydGluZyB0aGUgRGF0YVxuQ3JpbWVNb3RpdmVTdGF0ZVJhdyA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJUYWJsZV8xM19IYXRlX0NyaW1lX0luY2lkZW50c19wZXJfQmlhc19Nb3RpdmF0aW9uX2FuZF9RdWFydGVyX2J5X1N0YXRlX2FuZF9BZ2VuY3lfMjAxNi54bHN4XCIpXG5JbmVxdWFsaXR5QW5kQ3JpbWU1MzggPC0gcmVhZHI6OnJlYWRfY3N2KFwiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZpdmV0aGlydHllaWdodC9kYXRhL21hc3Rlci9oYXRlLWNyaW1lcy9oYXRlX2NyaW1lcy5jc3ZcIilcblBvdmVydHlCeVN0YXRlIDwtIHJlYWRyOjpyZWFkX2NzdihcIlN0YXRlIFBvdmVydHkgTGV2ZWxzIDIwMTYudHh0XCIpXG5SZWFkTWU1MzggPC0gcmVhZF9maWxlKFwiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZpdmV0aGlydHllaWdodC9kYXRhL21hc3Rlci9oYXRlLWNyaW1lcy9SRUFETUUubWRcIilcblxuYGBgIn0= -->
 <pre class="r"><code>#Importing the Data
-CrimeMotiveState &lt;- openxlsx::read.xlsx(xlsxFile = &quot;Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx&quot;)
-InequalityAndCrime538 &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/hate_crimes.csv&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBzdGF0ZSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBtZWRpYW5faG91c2Vob2xkX2luY29tZSA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBzaGFyZV91bmVtcGxveWVkX3NlYXNvbmFsID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIHNoYXJlX3BvcHVsYXRpb25faW5fbWV0cm9fYXJlYXMgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgc2hhcmVfcG9wdWxhdGlvbl93aXRoX2hpZ2hfc2Nob29sX2RlZ3JlZSA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBzaGFyZV9ub25fY2l0aXplbiA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBzaGFyZV93aGl0ZV9wb3ZlcnR5ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGdpbmlfaW5kZXggPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgc2hhcmVfbm9uX3doaXRlID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIHNoYXJlX3ZvdGVyc192b3RlZF90cnVtcCA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBoYXRlX2NyaW1lc19wZXJfMTAwa19zcGxjID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGF2Z19oYXRlY3JpbWVzX3Blcl8xMDBrX2ZiaSA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltXG4pXG4ifQ== -->
-<pre><code>Parsed with column specification:
-cols(
-  state = [31mcol_character()[39m,
-  median_household_income = [32mcol_double()[39m,
-  share_unemployed_seasonal = [32mcol_double()[39m,
-  share_population_in_metro_areas = [32mcol_double()[39m,
-  share_population_with_high_school_degree = [32mcol_double()[39m,
-  share_non_citizen = [32mcol_double()[39m,
-  share_white_poverty = [32mcol_double()[39m,
-  gini_index = [32mcol_double()[39m,
-  share_non_white = [32mcol_double()[39m,
-  share_voters_voted_trump = [32mcol_double()[39m,
-  hate_crimes_per_100k_splc = [32mcol_double()[39m,
-  avg_hatecrimes_per_100k_fbi = [32mcol_double()[39m
-)</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUG92ZXJ0eUJ5U3RhdGUgPC0gcmVhZHI6OnJlYWRfY3N2KFwiU3RhdGUgUG92ZXJ0eSBMZXZlbHMgMjAxNi50eHRcIilcbmBgYCJ9 -->
-<pre class="r"><code>PovertyByState &lt;- readr::read_csv(&quot;State Poverty Levels 2016.txt&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBTdGF0ZSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBQZXJjZW50SW5Qb3ZlcnR5ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW1cbilcbiJ9 -->
-<pre><code>Parsed with column specification:
-cols(
-  State = [31mcol_character()[39m,
-  PercentInPoverty = [32mcol_double()[39m
-)</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUmVhZE1lNTM4IDwtIHJlYWRfZmlsZShcImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9maXZldGhpcnR5ZWlnaHQvZGF0YS9tYXN0ZXIvaGF0ZS1jcmltZXMvUkVBRE1FLm1kXCIpXG5cbmBgYCJ9 -->
-<pre class="r"><code>ReadMe538 &lt;- read_file(&quot;https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/README.md&quot;)
+CrimeMotiveStateRaw &lt;- openxlsx::read.xlsx(xlsxFile = &quot;Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx&quot;)
+InequalityAndCrime538 &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/hate_crimes.csv&quot;)
+PovertyByState &lt;- readr::read_csv(&quot;State Poverty Levels 2016.txt&quot;)
+ReadMe538 &lt;- read_file(&quot;https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/README.md&quot;)
 </code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBJbnZlc3RpZ2F0aW5nIHRoZSBDcmltZU1vdGl2ZXNTdGF0ZVJhdyBUYWJsZVxuc3RyKENyaW1lTW90aXZlU3RhdGVSYXcpXG5gYGAifQ== -->
+<pre class="r"><code># Investigating the CrimeMotivesStateRaw Table
+str(CrimeMotiveStateRaw)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiJ2RhdGEuZnJhbWUnOlx0MjAyNCBvYnMuIG9mICAxNCB2YXJpYWJsZXM6XG4gJCBUYWJsZS4xMzogY2hyICBcIkhhdGUgQ3JpbWUgSW5jaWRlbnRzXCIgXCJwZXIgQmlhcyBNb3RpdmF0aW9uIGFuZCBRdWFydGVyXFxuXCIgXCJieSBTdGF0ZSBhbmQgQWdlbmN5LCAyMDE2XCIgXCJTdGF0ZVwiIC4uLlxuICQgWDIgICAgICA6IGNociAgTkEgTkEgTkEgXCJBZ2VuY3kgVHlwZVwiIC4uLlxuICQgWDMgICAgICA6IGNociAgTkEgTkEgTkEgXCJBZ2VuY3kgbmFtZVwiIC4uLlxuICQgWDQgICAgICA6IGNociAgTkEgTkEgTkEgXCJOdW1iZXIgb2YgaW5jaWRlbnRzIHBlciBiaWFzIG1vdGl2YXRpb25cIiAuLi5cbiAkIFg1ICAgICAgOiBjaHIgIE5BIE5BIE5BIE5BIC4uLlxuICQgWDYgICAgICA6IGNociAgTkEgTkEgTkEgTkEgLi4uXG4gJCBYNyAgICAgIDogY2hyICBOQSBOQSBOQSBOQSAuLi5cbiAkIFg4ICAgICAgOiBjaHIgIE5BIE5BIE5BIE5BIC4uLlxuICQgWDkgICAgICA6IGNociAgTkEgTkEgTkEgTkEgLi4uXG4gJCBYMTAgICAgIDogY2hyICBOQSBOQSBOQSBcIk51bWJlciBvZiBpbmNpZGVudHMgcGVyIHF1YXJ0ZXJcIiAuLi5cbiAkIFgxMSAgICAgOiBjaHIgIE5BIE5BIE5BIE5BIC4uLlxuICQgWDEyICAgICA6IGNociAgTkEgTkEgTkEgTkEgLi4uXG4gJCBYMTMgICAgIDogY2hyICBOQSBOQSBOQSBOQSAuLi5cbiAkIFgxNCAgICAgOiBjaHIgIE5BIE5BIE5BIFwiUG9wdWxhdGlvbjFcIiAuLi5cbiJ9 -->
+<pre><code>&#39;data.frame&#39;:   2024 obs. of  14 variables:
+ $ Table.13: chr  &quot;Hate Crime Incidents&quot; &quot;per Bias Motivation and Quarter\n&quot; &quot;by State and Agency, 2016&quot; &quot;State&quot; ...
+ $ X2      : chr  NA NA NA &quot;Agency Type&quot; ...
+ $ X3      : chr  NA NA NA &quot;Agency name&quot; ...
+ $ X4      : chr  NA NA NA &quot;Number of incidents per bias motivation&quot; ...
+ $ X5      : chr  NA NA NA NA ...
+ $ X6      : chr  NA NA NA NA ...
+ $ X7      : chr  NA NA NA NA ...
+ $ X8      : chr  NA NA NA NA ...
+ $ X9      : chr  NA NA NA NA ...
+ $ X10     : chr  NA NA NA &quot;Number of incidents per quarter&quot; ...
+ $ X11     : chr  NA NA NA NA ...
+ $ X12     : chr  NA NA NA NA ...
+ $ X13     : chr  NA NA NA NA ...
+ $ X14     : chr  NA NA NA &quot;Population1&quot; ...</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyeShDcmltZU1vdGl2ZVN0YXRlUmF3KVxuYGBgIn0= -->
+<pre class="r"><code>summary(CrimeMotiveStateRaw)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgVGFibGUuMTMgICAgICAgICAgICAgIFgyICAgICAgICAgICAgICAgICBYMyAgICAgICAgICAgICAgICAgWDQgICAgICAgICAgICAgICAgIFg1ICAgICAgICAgICAgICAgICBYNiAgICAgICAgICAgXG4gTGVuZ3RoOjIwMjQgICAgICAgIExlbmd0aDoyMDI0ICAgICAgICBMZW5ndGg6MjAyNCAgICAgICAgTGVuZ3RoOjIwMjQgICAgICAgIExlbmd0aDoyMDI0ICAgICAgICBMZW5ndGg6MjAyNCAgICAgICBcbiBDbGFzcyA6Y2hhcmFjdGVyICAgQ2xhc3MgOmNoYXJhY3RlciAgIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICAgQ2xhc3MgOmNoYXJhY3RlciAgIENsYXNzIDpjaGFyYWN0ZXIgIFxuIE1vZGUgIDpjaGFyYWN0ZXIgICBNb2RlICA6Y2hhcmFjdGVyICAgTW9kZSAgOmNoYXJhY3RlciAgIE1vZGUgIDpjaGFyYWN0ZXIgICBNb2RlICA6Y2hhcmFjdGVyICAgTW9kZSAgOmNoYXJhY3RlciAgXG4gICAgICBYNyAgICAgICAgICAgICAgICAgWDggICAgICAgICAgICAgICAgIFg5ICAgICAgICAgICAgICAgIFgxMCAgICAgICAgICAgICAgICBYMTEgICAgICAgICAgICAgICAgWDEyICAgICAgICAgICBcbiBMZW5ndGg6MjAyNCAgICAgICAgTGVuZ3RoOjIwMjQgICAgICAgIExlbmd0aDoyMDI0ICAgICAgICBMZW5ndGg6MjAyNCAgICAgICAgTGVuZ3RoOjIwMjQgICAgICAgIExlbmd0aDoyMDI0ICAgICAgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICAgQ2xhc3MgOmNoYXJhY3RlciAgIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICAgQ2xhc3MgOmNoYXJhY3RlciAgXG4gTW9kZSAgOmNoYXJhY3RlciAgIE1vZGUgIDpjaGFyYWN0ZXIgICBNb2RlICA6Y2hhcmFjdGVyICAgTW9kZSAgOmNoYXJhY3RlciAgIE1vZGUgIDpjaGFyYWN0ZXIgICBNb2RlICA6Y2hhcmFjdGVyICBcbiAgICAgWDEzICAgICAgICAgICAgICAgIFgxNCAgICAgICAgICAgXG4gTGVuZ3RoOjIwMjQgICAgICAgIExlbmd0aDoyMDI0ICAgICAgIFxuIENsYXNzIDpjaGFyYWN0ZXIgICBDbGFzcyA6Y2hhcmFjdGVyICBcbiBNb2RlICA6Y2hhcmFjdGVyICAgTW9kZSAgOmNoYXJhY3RlciAgXG4ifQ== -->
+<pre><code>   Table.13              X2                 X3                 X4                 X5                 X6           
+ Length:2024        Length:2024        Length:2024        Length:2024        Length:2024        Length:2024       
+ Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+      X7                 X8                 X9                X10                X11                X12           
+ Length:2024        Length:2024        Length:2024        Length:2024        Length:2024        Length:2024       
+ Class :character   Class :character   Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+     X13                X14           
+ Length:2024        Length:2024       
+ Class :character   Class :character  
+ Mode  :character   Mode  :character  </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChDcmltZU1vdGl2ZVN0YXRlUmF3LCAxMilcbmBgYCJ9 -->
+<pre class="r"><code>head(CrimeMotiveStateRaw, 12)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTQsIm5yb3ciOjEyfSwicmRmIjoiSDRzSUFBQUFBQUFBQnIxV1MzUGFNQkFXRUpQZ0VwcHBlK21wdnZYU0VHenpTSStFTkUwTzdhUWtCNjZ5VVVBVFc2S3luSVpiZjNsYStTSFpNVFE4cG9OblBQNjgydDN2VzcySDV5TmJIK2tBZ0Fxb1ZFdWdvZ2tJcW9OcjArcFlBT3lWeFY4SjdJRmE5SDBVWG04RmFJajNTTHoxdE9IZEplVElHRERzSStPS3VIaU1DQS9TTm1PR21IR0dZV0I4b3h3L1FJNHBNU0FaR3o5Q3lEaGlldXIzM3BrYk56ektFelgySjRpNDgwK0cxVEs3cVlNV3R3cFEreU9lMUxqZjk2QURmYWpNcTc1SldGV0VCZmRRbGZHeTk2dEVqWEU3bnhYNXRWdktvU2V6RGpESEtGaFRReHE2bVFRQ2ZiVENWVC9Eek1ka01vVitham00OENnVDRVZ3lYMUFQemFYb1Mwb2ZFTXNsVzBmUHgrK2g3NGlCcFhjR2xnTWVqN1FUamJTdlJsb083aEM2NkVUL3dxY0V1NWpQVC9TK2tCTndKbFdVVFdzQmxYb1NtQXZBVnQ3bVNzWFBsUjhNa1ljbm1iUWx5UlZvdlFRMm8zMXpneDVENk9tVVlkRlgrYjdaa1FEOUhBZlF3WjdvL2JXeS96Zmk2bGRFeG1LQzdaVDBkVUtxWDBVemN3Y2xKNDRmL3JVcWZpWjduVnpNWnNCMWFWcWVTVTN3SldyTXRkZHFZUSt4eUhnVnJiV0VMZGNKVzlIYWJIM2F4Wm0vZGJWdFB0MjgyaTFvVTdwck9ndTllRjJiSzF5cmxqaGIyNS9sWnR3V1I1eWsxY3hlMTFZdHA1MXVLNWZzMlZtc1JTZEJrSXByeUwzdEZqb2VhcHBxZHh5cFhYV1UyZG9LZFJUcUt0UlQ2RlFocWFneU1sc1pORE5vWmRET1lMdWd1Y2JvcjZiVWZSaGwvZzNpcDE0c3poWEhzeXhPR3ZVeDVMQjV4NUlUOEtrUXNrOW5VZCtMb0hKMFE5RUt3U1ZXTUJ5RkpGSXlQbmFuSWJrLzd0a1JROXlldklmcHQ1N0RqWVN6TE9lRUpnY1VrUWttNm5RVk54SWtyd1FOVVhKY2NYUEdNT0d5RkdFTm1qeDNkZEJkNmtsTFhCeDQrZ3NqMVBjSm1na0FBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Table.13"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[3],"type":["chr"],"align":["left"]},{"label":["X4"],"name":[4],"type":["chr"],"align":["left"]},{"label":["X5"],"name":[5],"type":["chr"],"align":["left"]},{"label":["X6"],"name":[6],"type":["chr"],"align":["left"]},{"label":["X7"],"name":[7],"type":["chr"],"align":["left"]},{"label":["X8"],"name":[8],"type":["chr"],"align":["left"]},{"label":["X9"],"name":[9],"type":["chr"],"align":["left"]},{"label":["X10"],"name":[10],"type":["chr"],"align":["left"]},{"label":["X11"],"name":[11],"type":["chr"],"align":["left"]},{"label":["X12"],"name":[12],"type":["chr"],"align":["left"]},{"label":["X13"],"name":[13],"type":["chr"],"align":["left"]},{"label":["X14"],"name":[14],"type":["chr"],"align":["left"]}],"data":[{"1":"Hate Crime Incidents","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","_rn_":"1"},{"1":"per Bias Motivation and Quarter\\n","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","_rn_":"2"},{"1":"by State and Agency, 2016","2":"NA","3":"NA","4":"NA","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","_rn_":"3"},{"1":"State","2":"Agency Type","3":"Agency name","4":"Number of incidents per bias motivation","5":"NA","6":"NA","7":"NA","8":"NA","9":"NA","10":"Number of incidents per quarter","11":"NA","12":"NA","13":"NA","14":"Population1","_rn_":"4"},{"1":"NA","2":"NA","3":"NA","4":"Race/\\nEthnicity/\\nAncestry","5":"Religion","6":"Sexual\\norientation","7":"Disability","8":"Gender","9":"Gender\\nIdentity","10":"1st\\nquarter","11":"2nd\\nquarter","12":"3rd\\nquarter","13":"4th\\nquarter","14":"NA","_rn_":"5"},{"1":"Alabama","2":"Total","3":"NA","4":"12","5":"1","6":"1","7":"0","8":"0","9":"0","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","_rn_":"6"},{"1":"NA","2":"Cities","3":"NA","4":"12","5":"1","6":"1","7":"0","8":"0","9":"0","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","_rn_":"7"},{"1":"NA","2":"NA","3":"Birmingham","4":"7","5":"1","6":"1","7":"0","8":"0","9":"0","10":"3","11":"2","12":"2","13":"2","14":"212549","_rn_":"8"},{"1":"NA","2":"NA","3":"Florence","4":"1","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"0","12":"1","13":"0","14":"40160","_rn_":"9"},{"1":"NA","2":"NA","3":"Foley","4":"1","5":"0","6":"0","7":"0","8":"0","9":"0","10":"0","11":"1","12":"0","13":"0","14":"17639","_rn_":"10"},{"1":"NA","2":"NA","3":"Hoover","4":"3","5":"0","6":"0","7":"0","8":"0","9":"0","10":"1","11":"0","12":"1","13":"1","14":"85601","_rn_":"11"},{"1":"Alaska","2":"Total","3":"NA","4":"11","5":"0","6":"0","7":"0","8":"0","9":"0","10":"NA","11":"NA","12":"NA","13":"NA","14":"NA","_rn_":"12"}],"options":{"columns":{"min":{},"max":[10],"total":[14]},"rows":{"min":[10],"max":[10],"total":[12]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIENsZWFuaW5nIHRoZSBDcmltZU1vdGl2ZXNTdGF0ZVJhdyBUYWJsZVxuQ3JpbWVNb3RpdmVTdGF0ZSA8LSBhcy5kYXRhLmZyYW1lKENyaW1lTW90aXZlU3RhdGVSYXdbLWMoMTo1KSxdKSAjIHJlbW92aW5nIGJsYW5rIGhlYWRlciByb3dzXG5yb3duYW1lcyhDcmltZU1vdGl2ZVN0YXRlKSA8LSAxOm5yb3coQ3JpbWVNb3RpdmVTdGF0ZSkgIyByZS1pbmRleGluZyB0aGUgcm93cyBqdXN0IGJlY2F1c2UgaXQgd2FzIGJvdGhlcmluZyBtZVxuXG5DcmltZU1vdGl2ZVN0YXRlIDwtXG4gIENyaW1lTW90aXZlU3RhdGUgJT4lXG4gIHNlbGVjdCgtYyhYMTAsIFgxMSwgWDEyLCBYMTMsIFgxNCkpICU+JSAjIHJlbW92aW5nIGNvbHVtbnMgSSBkb24ndCBuZWVkXG4gIHJlbmFtZShzdGF0ZSA9IGBUYWJsZS4xM2AsICMgcmVuYW1pbmcgY29sdW1uc1xuICAgICAgICAgcmFjZSA9IFg0LFxuICAgICAgICAgcmVsaWdpb24gPSBYNSxcbiAgICAgICAgIHNleHVhbE9yaWVudGF0aW9uID0gWDYsXG4gICAgICAgICBkaXNhYmlsaXR5ID0gWDcsXG4gICAgICAgICBnZW5kZXIgPSBYOCxcbiAgICAgICAgIGdlbmRlcklkZW50aXR5ID0gWDkpICU+JVxuICBtdXRhdGUoRmxhZyA9IGlmZWxzZShpcy5uYShzdGF0ZSksIFwiZHJvcFwiLCBcImtlZXBcIikpICU+JSMgYXNzaWduaW5nIGEgeWVzIG9yIG5vIHZhbHVlIHRvIHJvd3MgdGhhdCBnaXZlIHRoZSBzdGF0ZSB0b3RhbHMgdGhhdCBJJ20gaW50ZXJlc3RlZCBpblxuICBmaWx0ZXIoRmxhZyA9PSBcImtlZXBcIikgJT4lXG4gIG11dGF0ZShyYWNlID0gYXMubnVtZXJpYyhyYWNlKSxcbiAgICAgICAgIHJlbGlnaW9uID0gYXMubnVtZXJpYyhyZWxpZ2lvbiksXG4gICAgICAgICBzZXh1YWxPcmllbnRhdGlvbiA9IGFzLm51bWVyaWMoc2V4dWFsT3JpZW50YXRpb24pLFxuICAgICAgICAgZGlzYWJpbGl0eSA9IGFzLm51bWVyaWMoZGlzYWJpbGl0eSksXG4gICAgICAgICBnZW5kZXIgPSBhcy5udW1lcmljKGdlbmRlciksXG4gICAgICAgICBnZW5kZXJJZGVudGl0eSA9IGFzLm51bWVyaWMoZ2VuZGVySWRlbnRpdHkpKVxuIFxuQ3JpbWVNb3RpdmVTdGF0ZSA8LSBDcmltZU1vdGl2ZVN0YXRlWy1jKDUxOjUzKSwtYygyLDMsMTApXSAjIHJlbW92aW5nIHVubmVjY2Vzc2FyeSBmb290ZXIgcm93cyBhbmQgZW1wdHkgY29sdW1uc1xucm93bmFtZXMoQ3JpbWVNb3RpdmVTdGF0ZSkgPC0gMTpucm93KENyaW1lTW90aXZlU3RhdGUpICMgZW5zdXJpbmcgcm93cyBhcmUgcmUtaW5kZXhlZCBhcHByb3ByaWF0ZWx5XG5oZWFkKENyaW1lTW90aXZlU3RhdGUsIDEyKSAjY2hlY2tpbmcgcmVzdWx0c1xuYGBgIn0= -->
+<pre class="r"><code>
+# Cleaning the CrimeMotivesStateRaw Table
+CrimeMotiveState &lt;- as.data.frame(CrimeMotiveStateRaw[-c(1:5),]) # removing blank header rows
+rownames(CrimeMotiveState) &lt;- 1:nrow(CrimeMotiveState) # re-indexing the rows just because it was bothering me
+
+CrimeMotiveState &lt;-
+  CrimeMotiveState %&gt;%
+  select(-c(X10, X11, X12, X13, X14)) %&gt;% # removing columns I don&#39;t need
+  rename(state = `Table.13`, # renaming columns
+         race = X4,
+         religion = X5,
+         sexualOrientation = X6,
+         disability = X7,
+         gender = X8,
+         genderIdentity = X9) %&gt;%
+  mutate(Flag = ifelse(is.na(state), &quot;drop&quot;, &quot;keep&quot;)) %&gt;%# assigning a yes or no value to rows that give the state totals that I&#39;m interested in
+  filter(Flag == &quot;keep&quot;) %&gt;%
+  mutate(race = as.numeric(race),
+         religion = as.numeric(religion),
+         sexualOrientation = as.numeric(sexualOrientation),
+         disability = as.numeric(disability),
+         gender = as.numeric(gender),
+         genderIdentity = as.numeric(genderIdentity))
+ 
+CrimeMotiveState &lt;- CrimeMotiveState[-c(51:53),-c(2,3,10)] # removing unneccessary footer rows and empty columns
+rownames(CrimeMotiveState) &lt;- 1:nrow(CrimeMotiveState) # ensuring rows are re-indexed appropriately
+head(CrimeMotiveState, 12) #checking results</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6NywibnJvdyI6MTJ9LCJyZGYiOiJINHNJQUFBQUFBQUFCb1ZVUzI4VE1SQjJIcHRObDdSS0JVY09QU0RFZ1VhUWdxb0tDYlpLQ2dxWFJwd3FjY0haZFZLVGpWMTV2V3JobEovR1Qrb3ZhSmxkenl6ZFRVVkdzajUvOC9BOFpQdmIrT0lvdUFnWVl5M1c2alJZeTRNdDY0eW1iNGZ2aDR5MW04QWFyTTEyY3J3QnI2ZXc4V0gxWWZYUTRKOG1mTVpYSEdrSGFMcmtwZEhJMzFvUjdaNmFKVmNwVDVFSEk1N0l1VFpLbGg0am5XakRZNDM4eVVnckpTSXJvOHlTeTFnay9Kb2JnZnpaV0tiV3lNZ2U2UGtCaEdlcldYbWMveGxPazNGSnZ3aHRGcVhWbThUOFVzTm1MKzhuZk1VS0NWOGlmbDg3ZklGOFBYVTQvZVB3dk9ZZm92OFo0Z25xM3pDU0lzK25XMWFSY09LUTlLSDQ0ZkFJK1VmRUx1S1FWZTEwenZNdGViNnVxL3duNGpIaTYxb2RaOVFYSXMyblg4M0RhcktSdCs3QUhyZlg0eDdJbzNrMnp1bHU4OWdxLzgxVHp1WERsanJlVmYwM3BmS3dQTVZYSW1YdVVmbWtUQzIzZE1IYmhrZTA3eHFSeUlYVUN2bCtLbTR5bnB3YktSU0UvRE1Fc1V6NVRDYlMvcUtYdVJBcUZnYlpubU9UR09KeW4ycFJPMFpmRDZpd1hWak50U3U5VjY4K2d1ZE8xVGZLM056eXdkeEFQTEM3V29pdnIvSTZJYWlaL3lkZUxiaGhhb3ArcHZKSzRzUG9NbFBMdytQODJnZUYzYTFkeE42RHZlOXlOdS94TEk5bUlOUkNLaHFtQnorWFNHZ2cwSExSOGVES1NFV2ZUUURhZEdDMTVlUVhSRG9oVGRFY3Uvc0xWSnVuR1VnRkFBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["state"],"name":[1],"type":["chr"],"align":["left"]},{"label":["race"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["religion"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sexualOrientation"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["disability"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["gender"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["genderIdentity"],"name":[7],"type":["dbl"],"align":["right"]}],"data":[{"1":"Alabama","2":"12","3":"1","4":"1","5":"0","6":"0","7":"0","_rn_":"1"},{"1":"Alaska","2":"11","3":"0","4":"0","5":"0","6":"0","7":"0","_rn_":"2"},{"1":"Arizona","2":"110","3":"50","4":"53","5":"1","6":"0","7":"0","_rn_":"3"},{"1":"Arkansas","2":"10","3":"1","4":"0","5":"0","6":"0","7":"1","_rn_":"4"},{"1":"California","2":"522","3":"171","4":"208","5":"2","6":"3","7":"27","_rn_":"5"},{"1":"Colorado","2":"67","3":"19","4":"23","5":"0","6":"0","7":"0","_rn_":"6"},{"1":"Connecticut","2":"62","3":"30","4":"14","5":"0","6":"0","7":"0","_rn_":"7"},{"1":"Delaware","2":"11","3":"3","4":"1","5":"0","6":"0","7":"0","_rn_":"8"},{"1":"District of Columbia","2":"33","3":"18","4":"42","5":"2","6":"0","7":"20","_rn_":"9"},{"1":"Florida","2":"43","3":"19","4":"32","5":"1","6":"0","7":"1","_rn_":"10"},{"1":"Georgia","2":"25","3":"2","4":"12","5":"0","6":"0","7":"0","_rn_":"11"},{"1":"Idaho","2":"16","3":"7","4":"4","5":"0","6":"0","7":"0","_rn_":"12"}],"options":{"columns":{"min":{},"max":[10],"total":[7]},"rows":{"min":[10],"max":[10],"total":[12]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -1824,7 +1884,7 @@ state
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkVjb25vbWljIEluZXF1YWxpdHkgYW5kIEhhdGUgQ3JpbWVzIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KDQpCZWNvbWUgYWNxdWFpbnRlZCB3aXRoIHRoZSBkYXRhDQpFeHBsb3JlIGludHVpdGlvbiBmb3IgdGhlIHJlc2VhcmNoIHF1ZXN0aW9ucyBiZWZvcmUgaW1wb3NpbmcgZm9ybWFsIHN0cnVjdHVyZSAoZS5nLiwgaW5mZXJlbnRpYWwgb3IgcHJlZGljdGl2ZSBkZWxzKQ0KRGlzY292ZXIgZmVhdHVyZXMgaW4gdGhlIGRhdGEgdGhhdCBpbmZsdWVuY2UgbW9kZWxpbmcgZGVjaXNpb25zDQoNCmBgYHtyfQ0KI0NsZWFuaW5nIEVudmlyb25tZW50DQpybShsaXN0ID0gbHMoKSkNCg0KI0xvYWRpbmcgbmVjZXNzYXJ5IHBhY2thZ2VzDQpsaWJyYXJ5KG9wZW54bHN4KQ0KbGlicmFyeShEYXRhQ29tcHV0aW5nKQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpgYGANCg0KbWVudGlvbiA1MzggYW5kIGh0dHBzOi8vdWNyLmZiaS5nb3YvaGF0ZS1jcmltZS8yMDE2L3Jlc291cmNlLXBhZ2VzL2Fib3V0aGF0ZWNyaW1lDQoNCkV4cGxhbmF0aW9ucywgZGVmaW5pdGlvbnMsIGFuZCBjbGFyaWZpY2F0aW9ucyBvZiB2YXJpYWJsZSBuYW1lcyBhbmQgdGhlIGNvZGVzIHVzZWQgZm9yIHRoZSB2YXJpYWJsZXMgd2VyZSBwcm92aWRlZCBieSB0aGUgW3JlYWQgbWUgaW4gRml2ZVRoaXJ0eUVpZ2h0J3MgcmVwbyBnbG9zc2FyeSBwYWdlXShodHRwczovL3Vjci5mYmkuZ292L2hhdGUtY3JpbWUvMjAxNi9yZXNvdXJjZS1wYWdlcy9hYm91dGhhdGVjcmltZSkuDQoNCmBgYHtyfQ0KI0ltcG9ydGluZyB0aGUgRGF0YQ0KQ3JpbWVNb3RpdmVTdGF0ZSA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gIlRhYmxlXzEzX0hhdGVfQ3JpbWVfSW5jaWRlbnRzX3Blcl9CaWFzX01vdGl2YXRpb25fYW5kX1F1YXJ0ZXJfYnlfU3RhdGVfYW5kX0FnZW5jeV8yMDE2Lnhsc3giKQ0KSW5lcXVhbGl0eUFuZENyaW1lNTM4IDwtIHJlYWRyOjpyZWFkX2NzdigiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZpdmV0aGlydHllaWdodC9kYXRhL21hc3Rlci9oYXRlLWNyaW1lcy9oYXRlX2NyaW1lcy5jc3YiKQ0KUG92ZXJ0eUJ5U3RhdGUgPC0gcmVhZHI6OnJlYWRfY3N2KCJTdGF0ZSBQb3ZlcnR5IExldmVscyAyMDE2LnR4dCIpDQpSZWFkTWU1MzggPC0gcmVhZF9maWxlKCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vZml2ZXRoaXJ0eWVpZ2h0L2RhdGEvbWFzdGVyL2hhdGUtY3JpbWVzL1JFQURNRS5tZCIpDQoNCmBgYA0KDQpgYGB7cn0NCiNEaXNwbGF5aW5nIHRoZSBEYXRhDQpQZXJzb25zRXhvbmVyYXRlZA0KDQoNCg0Kc3RhdGUuYWJiDQpzdGF0ZS5hcmVhDQpzdGF0ZS5jZW50ZXINCnN0YXRlLmRpdmlzaW9uDQpzdGF0ZS5uYW1lDQpzdGF0ZS5yZWdpb24NCnN0YXRlDQoNCmBgYA==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkVjb25vbWljIEluZXF1YWxpdHkgYW5kIEhhdGUgQ3JpbWVzIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KDQpCZWNvbWUgYWNxdWFpbnRlZCB3aXRoIHRoZSBkYXRhDQpFeHBsb3JlIGludHVpdGlvbiBmb3IgdGhlIHJlc2VhcmNoIHF1ZXN0aW9ucyBiZWZvcmUgaW1wb3NpbmcgZm9ybWFsIHN0cnVjdHVyZSAoZS5nLiwgaW5mZXJlbnRpYWwgb3IgcHJlZGljdGl2ZSBkZWxzKQ0KRGlzY292ZXIgZmVhdHVyZXMgaW4gdGhlIGRhdGEgdGhhdCBpbmZsdWVuY2UgbW9kZWxpbmcgZGVjaXNpb25zDQoNCmBgYHtyfQ0KI0NsZWFuaW5nIEVudmlyb25tZW50DQpybShsaXN0ID0gbHMoKSkNCg0KI0xvYWRpbmcgbmVjZXNzYXJ5IHBhY2thZ2VzDQpsaWJyYXJ5KG9wZW54bHN4KQ0KbGlicmFyeShEYXRhQ29tcHV0aW5nKQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpgYGANCg0KbWVudGlvbiA1MzggYW5kIGh0dHBzOi8vdWNyLmZiaS5nb3YvaGF0ZS1jcmltZS8yMDE2L3Jlc291cmNlLXBhZ2VzL2Fib3V0aGF0ZWNyaW1lDQoNCkV4cGxhbmF0aW9ucywgZGVmaW5pdGlvbnMsIGFuZCBjbGFyaWZpY2F0aW9ucyBvZiB2YXJpYWJsZSBuYW1lcyBhbmQgdGhlIGNvZGVzIHVzZWQgZm9yIHRoZSB2YXJpYWJsZXMgd2VyZSBwcm92aWRlZCBieSB0aGUgW3JlYWQgbWUgaW4gRml2ZVRoaXJ0eUVpZ2h0J3MgcmVwbyBnbG9zc2FyeSBwYWdlXShodHRwczovL3Vjci5mYmkuZ292L2hhdGUtY3JpbWUvMjAxNi9yZXNvdXJjZS1wYWdlcy9hYm91dGhhdGVjcmltZSkuDQoNCmBgYHtyfQ0KI0ltcG9ydGluZyB0aGUgRGF0YQ0KQ3JpbWVNb3RpdmVTdGF0ZVJhdyA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gIlRhYmxlXzEzX0hhdGVfQ3JpbWVfSW5jaWRlbnRzX3Blcl9CaWFzX01vdGl2YXRpb25fYW5kX1F1YXJ0ZXJfYnlfU3RhdGVfYW5kX0FnZW5jeV8yMDE2Lnhsc3giKQ0KSW5lcXVhbGl0eUFuZENyaW1lNTM4IDwtIHJlYWRyOjpyZWFkX2NzdigiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZpdmV0aGlydHllaWdodC9kYXRhL21hc3Rlci9oYXRlLWNyaW1lcy9oYXRlX2NyaW1lcy5jc3YiKQ0KUG92ZXJ0eUJ5U3RhdGUgPC0gcmVhZHI6OnJlYWRfY3N2KCJTdGF0ZSBQb3ZlcnR5IExldmVscyAyMDE2LnR4dCIpDQpSZWFkTWU1MzggPC0gcmVhZF9maWxlKCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vZml2ZXRoaXJ0eWVpZ2h0L2RhdGEvbWFzdGVyL2hhdGUtY3JpbWVzL1JFQURNRS5tZCIpDQoNCmBgYA0KDQoNCg0KYGBge3J9DQojIEludmVzdGlnYXRpbmcgdGhlIENyaW1lTW90aXZlc1N0YXRlUmF3IFRhYmxlDQpzdHIoQ3JpbWVNb3RpdmVTdGF0ZVJhdykNCnN1bW1hcnkoQ3JpbWVNb3RpdmVTdGF0ZVJhdykNCmhlYWQoQ3JpbWVNb3RpdmVTdGF0ZVJhdywgMTIpDQoNCiMgQ2xlYW5pbmcgdGhlIENyaW1lTW90aXZlc1N0YXRlUmF3IFRhYmxlDQpDcmltZU1vdGl2ZVN0YXRlIDwtIGFzLmRhdGEuZnJhbWUoQ3JpbWVNb3RpdmVTdGF0ZVJhd1stYygxOjUpLF0pICMgcmVtb3ZpbmcgYmxhbmsgaGVhZGVyIHJvd3MNCnJvd25hbWVzKENyaW1lTW90aXZlU3RhdGUpIDwtIDE6bnJvdyhDcmltZU1vdGl2ZVN0YXRlKSAjIHJlLWluZGV4aW5nIHRoZSByb3dzIGp1c3QgYmVjYXVzZSBpdCB3YXMgYm90aGVyaW5nIG1lDQoNCkNyaW1lTW90aXZlU3RhdGUgPC0NCiAgQ3JpbWVNb3RpdmVTdGF0ZSAlPiUNCiAgc2VsZWN0KC1jKFgxMCwgWDExLCBYMTIsIFgxMywgWDE0KSkgJT4lICMgcmVtb3ZpbmcgY29sdW1ucyBJIGRvbid0IG5lZWQNCiAgcmVuYW1lKHN0YXRlID0gYFRhYmxlLjEzYCwgIyByZW5hbWluZyBjb2x1bW5zDQogICAgICAgICByYWNlID0gWDQsDQogICAgICAgICByZWxpZ2lvbiA9IFg1LA0KICAgICAgICAgc2V4dWFsT3JpZW50YXRpb24gPSBYNiwNCiAgICAgICAgIGRpc2FiaWxpdHkgPSBYNywNCiAgICAgICAgIGdlbmRlciA9IFg4LA0KICAgICAgICAgZ2VuZGVySWRlbnRpdHkgPSBYOSkgJT4lDQogIG11dGF0ZShGbGFnID0gaWZlbHNlKGlzLm5hKHN0YXRlKSwgImRyb3AiLCAia2VlcCIpKSAlPiUjIGFzc2lnbmluZyBhIHllcyBvciBubyB2YWx1ZSB0byByb3dzIHRoYXQgZ2l2ZSB0aGUgc3RhdGUgdG90YWxzIHRoYXQgSSdtIGludGVyZXN0ZWQgaW4NCiAgZmlsdGVyKEZsYWcgPT0gImtlZXAiKSAlPiUNCiAgbXV0YXRlKHJhY2UgPSBhcy5udW1lcmljKHJhY2UpLA0KICAgICAgICAgcmVsaWdpb24gPSBhcy5udW1lcmljKHJlbGlnaW9uKSwNCiAgICAgICAgIHNleHVhbE9yaWVudGF0aW9uID0gYXMubnVtZXJpYyhzZXh1YWxPcmllbnRhdGlvbiksDQogICAgICAgICBkaXNhYmlsaXR5ID0gYXMubnVtZXJpYyhkaXNhYmlsaXR5KSwNCiAgICAgICAgIGdlbmRlciA9IGFzLm51bWVyaWMoZ2VuZGVyKSwNCiAgICAgICAgIGdlbmRlcklkZW50aXR5ID0gYXMubnVtZXJpYyhnZW5kZXJJZGVudGl0eSkpDQogDQpDcmltZU1vdGl2ZVN0YXRlIDwtIENyaW1lTW90aXZlU3RhdGVbLWMoNTE6NTMpLC1jKDIsMywxMCldICMgcmVtb3ZpbmcgdW5uZWNjZXNzYXJ5IGZvb3RlciByb3dzIGFuZCBlbXB0eSBjb2x1bW5zDQpyb3duYW1lcyhDcmltZU1vdGl2ZVN0YXRlKSA8LSAxOm5yb3coQ3JpbWVNb3RpdmVTdGF0ZSkgIyBlbnN1cmluZyByb3dzIGFyZSByZS1pbmRleGVkIGFwcHJvcHJpYXRlbHkNCmhlYWQoQ3JpbWVNb3RpdmVTdGF0ZSwgNikgI2NoZWNraW5nIHJlc3VsdHMNCmBgYA0KDQpgYGB7cn0NCiNEaXNwbGF5aW5nIHRoZSBEYXRhDQpQZXJzb25zRXhvbmVyYXRlZA0KDQoNCg0Kc3RhdGUuYWJiDQpzdGF0ZS5hcmVhDQpzdGF0ZS5jZW50ZXINCnN0YXRlLmRpdmlzaW9uDQpzdGF0ZS5uYW1lDQpzdGF0ZS5yZWdpb24NCnN0YXRlDQoNCmBgYA==</div>
 
 
 

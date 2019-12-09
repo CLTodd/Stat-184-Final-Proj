@@ -24,11 +24,47 @@ Explanations, definitions, and clarifications of variable names and the codes us
 
 ```{r}
 #Importing the Data
-CrimeMotiveState <- openxlsx::read.xlsx(xlsxFile = "Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx")
+CrimeMotiveStateRaw <- openxlsx::read.xlsx(xlsxFile = "Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx")
 InequalityAndCrime538 <- readr::read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/hate_crimes.csv")
 PovertyByState <- readr::read_csv("State Poverty Levels 2016.txt")
 ReadMe538 <- read_file("https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/README.md")
 
+```
+
+
+
+```{r}
+# Investigating the CrimeMotivesStateRaw Table
+str(CrimeMotiveStateRaw)
+summary(CrimeMotiveStateRaw)
+head(CrimeMotiveStateRaw, 12)
+
+# Cleaning the CrimeMotivesStateRaw Table
+CrimeMotiveState <- as.data.frame(CrimeMotiveStateRaw[-c(1:5),]) # removing blank header rows
+rownames(CrimeMotiveState) <- 1:nrow(CrimeMotiveState) # re-indexing the rows just because it was bothering me
+
+CrimeMotiveState <-
+  CrimeMotiveState %>%
+  select(-c(X10, X11, X12, X13, X14)) %>% # removing columns I don't need
+  rename(state = `Table.13`, # renaming columns
+         race = X4,
+         religion = X5,
+         sexualOrientation = X6,
+         disability = X7,
+         gender = X8,
+         genderIdentity = X9) %>%
+  mutate(Flag = ifelse(is.na(state), "drop", "keep")) %>%# assigning a yes or no value to rows that give the state totals that I'm interested in
+  filter(Flag == "keep") %>%
+  mutate(race = as.numeric(race),
+         religion = as.numeric(religion),
+         sexualOrientation = as.numeric(sexualOrientation),
+         disability = as.numeric(disability),
+         gender = as.numeric(gender),
+         genderIdentity = as.numeric(genderIdentity))
+ 
+CrimeMotiveState <- CrimeMotiveState[-c(51:53),-c(2,3,10)] # removing unneccessary footer rows and empty columns
+rownames(CrimeMotiveState) <- 1:nrow(CrimeMotiveState) # ensuring rows are re-indexed appropriately
+head(CrimeMotiveState, 6) #checking results
 ```
 
 ```{r}
