@@ -1,28 +1,44 @@
 ---
-title: "Wrongful Convictions"
+title: "Economic Inequality and Hate Crimes"
 output: html_notebook
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+
+Become acquainted with the data
+Explore intuition for the research questions before imposing formal structure (e.g., inferential or predictive dels)
+Discover features in the data that influence modeling decisions
+
+```{r}
+#Cleaning Environment
+rm(list = ls())
+
+#Loading necessary packages
+library(openxlsx)
+library(DataComputing)
+library(tidyverse)
 ```
 
-## R Markdown
+mention 538 and https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrime
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Explanations, definitions, and clarifications of variable names and the codes used for the variables were provided by the [read me in FiveThirtyEight's repo glossary page](https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrime).
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+#Importing the Data
+IncomeInequality <- openxlsx::read.xlsx(xlsxFile = "publicspreadsheet.xlsx")
+PovertyByState <-
+CrimeTypeState <-
 
-```{r cars}
-summary(cars)
+#Displaying the Data
+PersonsExonerated
+
+
+
+state.abb
+state.area
+state.center
+state.division
+state.name
+state.region
+state
+
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
