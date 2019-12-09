@@ -24,10 +24,14 @@ Explanations, definitions, and clarifications of variable names and the codes us
 
 ```{r}
 #Importing the Data
-IncomeInequality <- openxlsx::read.xlsx(xlsxFile = "publicspreadsheet.xlsx")
-PovertyByState <-
-CrimeTypeState <-
+CrimeMotiveState <- openxlsx::read.xlsx(xlsxFile = "Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx")
+InequalityAndCrime538 <- readr::read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/hate_crimes.csv")
+PovertyByState <- readr::read_csv("State Poverty Levels 2016.txt")
+ReadMe538 <- read_file("https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/README.md")
 
+```
+
+```{r}
 #Displaying the Data
 PersonsExonerated
 

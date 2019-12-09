@@ -1752,12 +1752,14 @@ summary {
 <p>Become acquainted with the data Explore intuition for the research questions before imposing formal structure (e.g., inferential or predictive dels) Discover features in the data that influence modeling decisions</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0NsZWFuaW5nIEVudmlyb25tZW50XG5ybShsaXN0ID0gbHMoKSlcblxuI0xvYWRpbmcgbmVjZXNzYXJ5IHBhY2thZ2VzXG5saWJyYXJ5KG9wZW54bHN4KVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0NsZWFuaW5nIEVudmlyb25tZW50XG5ybShsaXN0ID0gbHMoKSlcblxuI0xvYWRpbmcgbmVjZXNzYXJ5IHBhY2thZ2VzXG5saWJyYXJ5KG9wZW54bHN4KVxubGlicmFyeShEYXRhQ29tcHV0aW5nKVxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
 <pre class="r"><code>#Cleaning Environment
 rm(list = ls())
 
 #Loading necessary packages
-library(openxlsx)</code></pre>
+library(openxlsx)
+library(DataComputing)
+library(tidyverse)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1765,13 +1767,48 @@ library(openxlsx)</code></pre>
 <p>Explanations, definitions, and clarifications of variable names and the codes used for the variables were provided by the <a href="https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrime">read me in FiveThirtyEight’s repo glossary page</a>.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0ltcG9ydGluZyB0aGUgRGF0YVxuSW5jb21lSW5lcXVhbGl0eSA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJwdWJsaWNzcHJlYWRzaGVldC54bHN4XCIpXG5Qb3ZlcnR5QnlTdGF0ZSA8LVxuQ3JpbWVUeXBlU3RhdGUgPC1cblxuI0Rpc3BsYXlpbmcgdGhlIERhdGFcblBlcnNvbnNFeG9uZXJhdGVkXG5cblxuXG5zdGF0ZS5hYmJcbnN0YXRlLmFyZWFcbnN0YXRlLmNlbnRlclxuc3RhdGUuZGl2aXNpb25cbnN0YXRlLm5hbWVcbnN0YXRlLnJlZ2lvblxuc3RhdGVcblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0ltcG9ydGluZyB0aGUgRGF0YVxuQ3JpbWVNb3RpdmVTdGF0ZSA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJUYWJsZV8xM19IYXRlX0NyaW1lX0luY2lkZW50c19wZXJfQmlhc19Nb3RpdmF0aW9uX2FuZF9RdWFydGVyX2J5X1N0YXRlX2FuZF9BZ2VuY3lfMjAxNi54bHN4XCIpXG5JbmVxdWFsaXR5QW5kQ3JpbWU1MzggPC0gcmVhZHI6OnJlYWRfY3N2KFwiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZpdmV0aGlydHllaWdodC9kYXRhL21hc3Rlci9oYXRlLWNyaW1lcy9oYXRlX2NyaW1lcy5jc3ZcIilcbmBgYCJ9 -->
 <pre class="r"><code>#Importing the Data
-IncomeInequality &lt;- openxlsx::read.xlsx(xlsxFile = &quot;publicspreadsheet.xlsx&quot;)
-PovertyByState &lt;-
-CrimeTypeState &lt;-
-
-#Displaying the Data
+CrimeMotiveState &lt;- openxlsx::read.xlsx(xlsxFile = &quot;Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx&quot;)
+InequalityAndCrime538 &lt;- readr::read_csv(&quot;https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/hate_crimes.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBzdGF0ZSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBtZWRpYW5faG91c2Vob2xkX2luY29tZSA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBzaGFyZV91bmVtcGxveWVkX3NlYXNvbmFsID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIHNoYXJlX3BvcHVsYXRpb25faW5fbWV0cm9fYXJlYXMgPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgc2hhcmVfcG9wdWxhdGlvbl93aXRoX2hpZ2hfc2Nob29sX2RlZ3JlZSA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBzaGFyZV9ub25fY2l0aXplbiA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBzaGFyZV93aGl0ZV9wb3ZlcnR5ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGdpbmlfaW5kZXggPSBcdTAwMWJbMzJtY29sX2RvdWJsZSgpXHUwMDFiWzM5bSxcbiAgc2hhcmVfbm9uX3doaXRlID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIHNoYXJlX3ZvdGVyc192b3RlZF90cnVtcCA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltLFxuICBoYXRlX2NyaW1lc19wZXJfMTAwa19zcGxjID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW0sXG4gIGF2Z19oYXRlY3JpbWVzX3Blcl8xMDBrX2ZiaSA9IFx1MDAxYlszMm1jb2xfZG91YmxlKClcdTAwMWJbMzltXG4pXG4ifQ== -->
+<pre><code>Parsed with column specification:
+cols(
+  state = [31mcol_character()[39m,
+  median_household_income = [32mcol_double()[39m,
+  share_unemployed_seasonal = [32mcol_double()[39m,
+  share_population_in_metro_areas = [32mcol_double()[39m,
+  share_population_with_high_school_degree = [32mcol_double()[39m,
+  share_non_citizen = [32mcol_double()[39m,
+  share_white_poverty = [32mcol_double()[39m,
+  gini_index = [32mcol_double()[39m,
+  share_non_white = [32mcol_double()[39m,
+  share_voters_voted_trump = [32mcol_double()[39m,
+  hate_crimes_per_100k_splc = [32mcol_double()[39m,
+  avg_hatecrimes_per_100k_fbi = [32mcol_double()[39m
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUG92ZXJ0eUJ5U3RhdGUgPC0gcmVhZHI6OnJlYWRfY3N2KFwiU3RhdGUgUG92ZXJ0eSBMZXZlbHMgMjAxNi50eHRcIilcbmBgYCJ9 -->
+<pre class="r"><code>PovertyByState &lt;- readr::read_csv(&quot;State Poverty Levels 2016.txt&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFyc2VkIHdpdGggY29sdW1uIHNwZWNpZmljYXRpb246XG5jb2xzKFxuICBTdGF0ZSA9IFx1MDAxYlszMW1jb2xfY2hhcmFjdGVyKClcdTAwMWJbMzltLFxuICBQZXJjZW50SW5Qb3ZlcnR5ID0gXHUwMDFiWzMybWNvbF9kb3VibGUoKVx1MDAxYlszOW1cbilcbiJ9 -->
+<pre><code>Parsed with column specification:
+cols(
+  State = [31mcol_character()[39m,
+  PercentInPoverty = [32mcol_double()[39m
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUmVhZE1lNTM4IDwtIHJlYWRfZmlsZShcImh0dHBzOi8vcmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbS9maXZldGhpcnR5ZWlnaHQvZGF0YS9tYXN0ZXIvaGF0ZS1jcmltZXMvUkVBRE1FLm1kXCIpXG5cbmBgYCJ9 -->
+<pre class="r"><code>ReadMe538 &lt;- read_file(&quot;https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/README.md&quot;)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0Rpc3BsYXlpbmcgdGhlIERhdGFcblBlcnNvbnNFeG9uZXJhdGVkXG5cblxuXG5zdGF0ZS5hYmJcbnN0YXRlLmFyZWFcbnN0YXRlLmNlbnRlclxuc3RhdGUuZGl2aXNpb25cbnN0YXRlLm5hbWVcbnN0YXRlLnJlZ2lvblxuc3RhdGVcblxuYGBgIn0= -->
+<pre class="r"><code>#Displaying the Data
 PersonsExonerated
 
 
@@ -1787,7 +1824,7 @@ state
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIkVjb25vbWljIEluZXF1YWxpdHkgYW5kIEhhdGUgQ3JpbWVzIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KDQpCZWNvbWUgYWNxdWFpbnRlZCB3aXRoIHRoZSBkYXRhDQpFeHBsb3JlIGludHVpdGlvbiBmb3IgdGhlIHJlc2VhcmNoIHF1ZXN0aW9ucyBiZWZvcmUgaW1wb3NpbmcgZm9ybWFsIHN0cnVjdHVyZSAoZS5nLiwgaW5mZXJlbnRpYWwgb3IgcHJlZGljdGl2ZSBkZWxzKQ0KRGlzY292ZXIgZmVhdHVyZXMgaW4gdGhlIGRhdGEgdGhhdCBpbmZsdWVuY2UgbW9kZWxpbmcgZGVjaXNpb25zDQoNCmBgYHtyfQ0KI0NsZWFuaW5nIEVudmlyb25tZW50DQpybShsaXN0ID0gbHMoKSkNCg0KI0xvYWRpbmcgbmVjZXNzYXJ5IHBhY2thZ2VzDQpsaWJyYXJ5KG9wZW54bHN4KQ0KbGlicmFyeShEYXRhQ29tcHV0aW5nKQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpgYGANCg0KbWVudGlvbiA1MzggYW5kIGh0dHBzOi8vdWNyLmZiaS5nb3YvaGF0ZS1jcmltZS8yMDE2L3Jlc291cmNlLXBhZ2VzL2Fib3V0aGF0ZWNyaW1lDQoNCkV4cGxhbmF0aW9ucywgZGVmaW5pdGlvbnMsIGFuZCBjbGFyaWZpY2F0aW9ucyBvZiB2YXJpYWJsZSBuYW1lcyBhbmQgdGhlIGNvZGVzIHVzZWQgZm9yIHRoZSB2YXJpYWJsZXMgd2VyZSBwcm92aWRlZCBieSB0aGUgW3JlYWQgbWUgaW4gRml2ZVRoaXJ0eUVpZ2h0J3MgcmVwbyBnbG9zc2FyeSBwYWdlXShodHRwczovL3Vjci5mYmkuZ292L2hhdGUtY3JpbWUvMjAxNi9yZXNvdXJjZS1wYWdlcy9hYm91dGhhdGVjcmltZSkuDQoNCmBgYHtyfQ0KI0ltcG9ydGluZyB0aGUgRGF0YQ0KSW5jb21lSW5lcXVhbGl0eSA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gInB1YmxpY3NwcmVhZHNoZWV0Lnhsc3giKQ0KUG92ZXJ0eUJ5U3RhdGUgPC0NCkNyaW1lVHlwZVN0YXRlIDwtDQoNCiNEaXNwbGF5aW5nIHRoZSBEYXRhDQpQZXJzb25zRXhvbmVyYXRlZA0KDQoNCg0Kc3RhdGUuYWJiDQpzdGF0ZS5hcmVhDQpzdGF0ZS5jZW50ZXINCnN0YXRlLmRpdmlzaW9uDQpzdGF0ZS5uYW1lDQpzdGF0ZS5yZWdpb24NCnN0YXRlDQoNCmBgYA==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIkVjb25vbWljIEluZXF1YWxpdHkgYW5kIEhhdGUgQ3JpbWVzIg0Kb3V0cHV0OiBodG1sX25vdGVib29rDQotLS0NCg0KDQpCZWNvbWUgYWNxdWFpbnRlZCB3aXRoIHRoZSBkYXRhDQpFeHBsb3JlIGludHVpdGlvbiBmb3IgdGhlIHJlc2VhcmNoIHF1ZXN0aW9ucyBiZWZvcmUgaW1wb3NpbmcgZm9ybWFsIHN0cnVjdHVyZSAoZS5nLiwgaW5mZXJlbnRpYWwgb3IgcHJlZGljdGl2ZSBkZWxzKQ0KRGlzY292ZXIgZmVhdHVyZXMgaW4gdGhlIGRhdGEgdGhhdCBpbmZsdWVuY2UgbW9kZWxpbmcgZGVjaXNpb25zDQoNCmBgYHtyfQ0KI0NsZWFuaW5nIEVudmlyb25tZW50DQpybShsaXN0ID0gbHMoKSkNCg0KI0xvYWRpbmcgbmVjZXNzYXJ5IHBhY2thZ2VzDQpsaWJyYXJ5KG9wZW54bHN4KQ0KbGlicmFyeShEYXRhQ29tcHV0aW5nKQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpgYGANCg0KbWVudGlvbiA1MzggYW5kIGh0dHBzOi8vdWNyLmZiaS5nb3YvaGF0ZS1jcmltZS8yMDE2L3Jlc291cmNlLXBhZ2VzL2Fib3V0aGF0ZWNyaW1lDQoNCkV4cGxhbmF0aW9ucywgZGVmaW5pdGlvbnMsIGFuZCBjbGFyaWZpY2F0aW9ucyBvZiB2YXJpYWJsZSBuYW1lcyBhbmQgdGhlIGNvZGVzIHVzZWQgZm9yIHRoZSB2YXJpYWJsZXMgd2VyZSBwcm92aWRlZCBieSB0aGUgW3JlYWQgbWUgaW4gRml2ZVRoaXJ0eUVpZ2h0J3MgcmVwbyBnbG9zc2FyeSBwYWdlXShodHRwczovL3Vjci5mYmkuZ292L2hhdGUtY3JpbWUvMjAxNi9yZXNvdXJjZS1wYWdlcy9hYm91dGhhdGVjcmltZSkuDQoNCmBgYHtyfQ0KI0ltcG9ydGluZyB0aGUgRGF0YQ0KQ3JpbWVNb3RpdmVTdGF0ZSA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gIlRhYmxlXzEzX0hhdGVfQ3JpbWVfSW5jaWRlbnRzX3Blcl9CaWFzX01vdGl2YXRpb25fYW5kX1F1YXJ0ZXJfYnlfU3RhdGVfYW5kX0FnZW5jeV8yMDE2Lnhsc3giKQ0KSW5lcXVhbGl0eUFuZENyaW1lNTM4IDwtIHJlYWRyOjpyZWFkX2NzdigiaHR0cHM6Ly9yYXcuZ2l0aHVidXNlcmNvbnRlbnQuY29tL2ZpdmV0aGlydHllaWdodC9kYXRhL21hc3Rlci9oYXRlLWNyaW1lcy9oYXRlX2NyaW1lcy5jc3YiKQ0KUG92ZXJ0eUJ5U3RhdGUgPC0gcmVhZHI6OnJlYWRfY3N2KCJTdGF0ZSBQb3ZlcnR5IExldmVscyAyMDE2LnR4dCIpDQpSZWFkTWU1MzggPC0gcmVhZF9maWxlKCJodHRwczovL3Jhdy5naXRodWJ1c2VyY29udGVudC5jb20vZml2ZXRoaXJ0eWVpZ2h0L2RhdGEvbWFzdGVyL2hhdGUtY3JpbWVzL1JFQURNRS5tZCIpDQoNCmBgYA0KDQpgYGB7cn0NCiNEaXNwbGF5aW5nIHRoZSBEYXRhDQpQZXJzb25zRXhvbmVyYXRlZA0KDQoNCg0Kc3RhdGUuYWJiDQpzdGF0ZS5hcmVhDQpzdGF0ZS5jZW50ZXINCnN0YXRlLmRpdmlzaW9uDQpzdGF0ZS5uYW1lDQpzdGF0ZS5yZWdpb24NCnN0YXRlDQoNCmBgYA==</div>
 
 
 
