@@ -1,5 +1,7 @@
 ---
 title: "Economic Inequality and Hate Crimes"
+author: "Candace Todd"
+date: "December 17, 2019"
 output: html_notebook
 ---
 
@@ -38,6 +40,10 @@ mention 538 and https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrim
 
 Explanations, definitions, and clarifications of variable names and the codes used for the variables were provided by the [read me in FiveThirtyEight's repo glossary page](https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrime).
 
+### How Did Economic Inequality Affect Hate Crime Rates Around the Country in 2016?
+To answer this question, we'll look at unemployment rates, poverty rates, Gini indices recorded for each state in the U.S in 2016 and compare them to each state's hate crime rates. The data used is from a combination of three sources: [FiveThirtyEight.com](https://fivethirtyeight.com/features/higher-rates-of-hate-crimes-are-tied-to-income-inequality/), [The U.S Federal Bureau of Investigation](https://ucr.fbi.gov/hate-crime/2016/tables/table-13/table_13_hate_crime_incidents_per_bias_motivation_and_quarter_by_state_and_agency_2016.xls/view), and [epi.org](https://www.epi.org/blog/poverty-declines-most-states-2016/).
+  
+#### Importing the data.
 ```{r, message=FALSE}
 #Importing the Data
 CrimeMotiveStateRaw <- openxlsx::read.xlsx(xlsxFile = "Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx")
@@ -48,7 +54,7 @@ PovertyByState <- readr::read_csv("State Poverty Levels 2016.txt")
 
 ```
 
-
+Upon Inspection, we see that the FiveThirtyEight data and epi data are already tidy and have their variable correctly typed, but the FBI data is untidy, has awkward variable names, and has its variables typed incorrectly.
 ```{r}
 # Inspecting Inequality and Crime data from fivethirtyeight
 summary(InequalityAndCrime538)
@@ -63,14 +69,31 @@ head(PovertyByState)
 # Inspecting the CrimeMotivesStateRaw Table
 summary(CrimeMotiveStateRaw)
 head(CrimeMotiveStateRaw, 12)
-
+```
+  
+#### Tidying the FBI Data  
+Before anything could be done with the FBI data, the header and footer rows that seemed to previously serve as titles and footnotes had to be removed. Then, we can more easily see what each of the columns is supposed to stand for. 
+```{r}
 # Cleaning the CrimeMotivesStateRaw Table
-CrimeMotiveState <- as.data.frame(CrimeMotiveStateRaw[-c(1:5),]) # removing blank header rows
+CrimeMotiveState <- as.data.frame(CrimeMotiveStateRaw[-c(1:5),]) # removing header rows
 rownames(CrimeMotiveState) <- 1:nrow(CrimeMotiveState) # re-indexing the rows just because it was bothering me
-
+head(CrimeMotiveState, 4)
+```
+  
+The last few columns refer to quarterly breakdowns of the total counts, but aren't interested in these so we drop them. 
+```{r}
 CrimeMotiveState <-
   CrimeMotiveState %>%
-  select(-c(X10, X11, X12, X13, X14)) %>% # removing columns I don't need
+  select(-c(X10, X11, X12, X13, X14)) # removing columns I don't need
+head(CrimeMotiveState, 6)
+```
+  
+We can see that in the original Microsoft Excel format, each state had a breakdown of the cities where the crime occurred. This may be useful later to plot the exact location of the crimes on a U.S map, but for now we don't need this information. We do some wrangling to select for the total counts of hate crimes for each state.
+  
+Here, we also rename columns from variable codes to plain English and correct the variable types.
+```{r}
+CrimeMotiveState <-
+  CrimeMotiveState %>%
   rename(state = `Table.13`, # renaming columns
          race = X4,
          religion = X5,
@@ -93,6 +116,8 @@ CrimeMotiveState <- CrimeMotiveState[-c(51:53),-c(2,3)] # removing unneccessary 
 rownames(CrimeMotiveState) <- 1:nrow(CrimeMotiveState) # ensuring rows are re-indexed appropriately
 head(CrimeMotiveState, 6) #checking results
 ```
+  
+Now that all of our data are tidy, we can join the 3 tables.
 ```{r}
 # Joining all data
 # First, joining the smaller data sets to make sure everything goes smoothly
@@ -114,3 +139,5 @@ nrow(Master)
 names(Master)
   
 ```
+  
+These variable names aren't very concise but they are descriptive, so I'm electing not to rename them at this point. 
