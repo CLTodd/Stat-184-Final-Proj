@@ -133,26 +133,26 @@ Continuing the wrangling:
 rownames(Crime2008) <- 1:nrow(Crime2008) # re-numbering the rows
 rownames(Hate2008) <- 1:nrow(Hate2008)
 
-#Removing rows that appear to be footnotes
+# Removing rows that appear to be footnotes
 Crime2008 <- as.data.frame(Crime2008[-c(500:504),])
 Hate2008 <- as.data.frame(Hate2008[-c(2388:2390),])
 
 tail(Crime2008, 5)
 tail(Hate2008, 5)
 
-#Renaming the useful columns, re-classing variabels, and dropping (ignoring) columns that aren't of interest to the research question
+# Renaming the useful columns, re-classing variabels, and dropping (ignoring) columns that aren't of interest to the research question
 Crime2008 <-
 Crime2008 %>%
-  transmute(state = tolower(`Table.5`), # making all lowercase for consistency's sake, because some tables have states in all caps
-            total = as.numeric(X2), #        In the raw data, the `X2` column actually represents the area of the state where the crim occured,
-            population = as.numeric(X4), #   but we're only going to end up using the row with the state totals so we're renaming it `total` now.
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # making all lowercase for consistency's sake and removing numbers from states
+            total = X2, # In the raw data, the `X2` column actually represents the area of the state where the crime occured,
+            population = as.numeric(X4), # but we're only going to end up using the row with the state totals so we're renaming it `total` now.
             violentCrime = as.numeric(X5),#     All other crimes listed are a subset of violent or property crimes (according to the FBI website),
             propertyCrime = as.numeric(X10),#   so we'll only keep these two
             allCrime = (violentCrime + propertyCrime) # Creating a variable I anticipate using in the future
             )
 Hate2008 <-
 Hate2008 %>%
-  transmute(state = tolower(`Table.13`),
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)), 
             race_ethnicity = (as.numeric(X4) + as.numeric(X7)), # Race/Ethnicity/Ancestry is one column in later years so we combine them here
             religion = as.numeric(X5),
             sexualOrientation = as.numeric(X6),
@@ -160,11 +160,24 @@ Hate2008 %>%
             )
 str(Crime2008)
 str(Hate2008)
+
+# Fixing the Crime data so that there's a State name mext to the State total, because that's the row we want to preserve
+
+# This for loop will grab the state name from the row above is there is no state name listed in the first column of the row
+for (i in 1:nrow(Crime2008)){
+  if(is.na(Crime2008[i,1])){
+    Crime2008[i,1] <- Crime2008[(i-1),1]
+  }
+}
+# Now the only rows without any NA values are the rows with the State Totals, which are the rows we want
+Crime2008 <- na.omit(Crime2008)
+
+
 ```
 
 
 ```{r, echo = FALSE, results = "hide"}
-#Removing Footnotes
+# Removing Footnotes
 Crime2009 <- as.data.frame(Crime2009[-c(496:501),])
 Crime2010 <- as.data.frame(Crime2010[-c(504:507),])
 Crime2011 <- as.data.frame(Crime2011[-c(512:515),])
@@ -187,90 +200,238 @@ Hate2016 <- as.data.frame(Hate2016[-c(2017:2019),])
 Hate2017 <- as.data.frame(Hate2017[-c(2298:2300),])
 Hate2018 <- as.data.frame(Hate2018[-c(2283:2286),])
 
-#Renaming the useful columns, re-classing variabels, and dropping (ignoring) columns that aren't of interest to the research question
+# Renaming the useful columns, re-classing variabels, and dropping (ignoring) columns that aren't of interest to the research question
 Crime2009 <- Crime2009 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed, 
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), 
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X10),
   allCrime = (violentCrime + propertyCrime))
 
 Crime2010 <- Crime2010 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed, 
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)),
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X10),
   allCrime = (violentCrime + propertyCrime))
 
 Crime2011 <- Crime2011 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed, 
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)),
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X10),
   allCrime = (violentCrime + propertyCrime))
 
 Crime2012 <- Crime2012 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed, 
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), 
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X10),
   allCrime = (violentCrime + propertyCrime))
 
 Crime2013 <- Crime2013 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)),
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X11),
   allCrime = (violentCrime + propertyCrime))
 
 Crime2014 <- Crime2014 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)),
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X11),
   allCrime = (violentCrime + propertyCrime))
 
 Crime2015 <- Crime2015 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)),
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X11),
   allCrime = (violentCrime + propertyCrime))
 
 Crime2016 <- Crime2016 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.3`)), 
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X11),
   allCrime = (violentCrime + propertyCrime))
 
 Crime2017 <- Crime2017 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)),
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X10),
   allCrime = (violentCrime + propertyCrime))
 
 Crime2018 <- Crime2018 %>%
-  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
-  total = as.numeric(X2), 
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)),
+  total = X2, 
   population = as.numeric(X4), 
   violentCrime = as.numeric(X5),
   propertyCrime = as.numeric(X10),
   allCrime = (violentCrime + propertyCrime))
 
+Hate2009 <- Hate2009 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = (as.numeric(X4) + as.numeric(X7)),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X8))
 
+Hate2010 <- Hate2010 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = (as.numeric(X4) + as.numeric(X7)),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X8))
 
+Hate2011 <- Hate2011 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = (as.numeric(X4) + as.numeric(X7)),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X8))
 
+Hate2012 <- Hate2012 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = (as.numeric(X4) + as.numeric(X7)),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X8))
+
+Hate2013 <- Hate2013 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = (as.numeric(X4) + as.numeric(X7)),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X8),
+            gender = as.numeric(X9),
+            genderIdentity = as.numeric(X10))
+
+Hate2014 <- Hate2014 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = (as.numeric(X4) + as.numeric(X7)),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X8),
+            gender = as.numeric(X9),
+            genderIdentity = as.numeric(X10))
+
+Hate2015 <- Hate2015 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = as.numeric(X4),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X7),
+            gender = as.numeric(X8),
+            genderIdentity = as.numeric(X9))
+
+Hate2016 <- Hate2016 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = as.numeric(X4),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X7),
+            gender = as.numeric(X8),
+            genderIdentity = as.numeric(X9))
+
+Hate2017 <- Hate2017 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = as.numeric(X4),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X7),
+            gender = as.numeric(X8),
+            genderIdentity = as.numeric(X9))
+
+Hate2018 <- Hate2018 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.13`)),
+            race_ethnicity = as.numeric(X4),
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X7),
+            gender = as.numeric(X8),
+            genderIdentity = as.numeric(X9))
+
+for (i in 1:nrow(Crime2009)){
+  if(is.na(Crime2009[i,1])){
+    Crime2009[i,1] <- Crime2009[(i-1),1]
+  }
+}
+Crime2009 <- na.omit(Crime2009)
+
+for (i in 1:nrow(Crime2010)){
+  if(is.na(Crime2010[i,1])){
+    Crime2010[i,1] <- Crime2010[(i-1),1]
+  }
+}
+Crime2010 <- na.omit(Crime2010)
+
+for (i in 1:nrow(Crime2011)){
+  if(is.na(Crime2011[i,1])){
+    Crime2011[i,1] <- Crime2011[(i-1),1]
+  }
+}
+Crime2011 <- na.omit(Crime2011)
+
+for (i in 1:nrow(Crime2012)){
+  if(is.na(Crime2012[i,1])){
+    Crime2012[i,1] <- Crime2012[(i-1),1]
+  }
+}
+Crime2012 <- na.omit(Crime2012)
+
+for (i in 1:nrow(Crime2013)){
+  if(is.na(Crime2013[i,1])){
+    Crime2013[i,1] <- Crime2013[(i-1),1]
+  }
+}
+Crime2013 <- na.omit(Crime2013)
+
+for (i in 1:nrow(Crime2014)){
+  if(is.na(Crime2014[i,1])){
+    Crime2014[i,1] <- Crime2014[(i-1),1]
+  }
+}
+Crime2014 <- na.omit(Crime2014)
+
+for (i in 1:nrow(Crime2015)){
+  if(is.na(Crime2015[i,1])){
+    Crime2015[i,1] <- Crime2015[(i-1),1]
+  }
+}
+Crime2015 <- na.omit(Crime2015)
+
+for (i in 1:nrow(Crime2016)){
+  if(is.na(Crime2016[i,1])){
+    Crime2016[i,1] <- Crime2016[(i-1),1]
+  }
+}
+Crime2016 <- na.omit(Crime2016)
+
+for (i in 1:nrow(Crime2017)){
+  if(is.na(Crime2017[i,1])){
+    Crime2017[i,1] <- Crime2017[(i-1),1]
+  }
+}
+Crime2017 <- na.omit(Crime2017)
+
+for (i in 1:nrow(Crime2018)){
+  if(is.na(Crime2018[i,1])){
+    Crime2018[i,1] <- Crime2018[(i-1),1]
+  }
+}
+Crime2018 <- na.omit(Crime2018)
 #rownames(Crime2008) <- 1:nrow(Crime2008) # the rows just because it was bothering me
 #head(CrimeMotiveState, 3)
 ```
