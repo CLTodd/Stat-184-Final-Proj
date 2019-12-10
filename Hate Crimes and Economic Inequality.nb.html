@@ -1774,7 +1774,7 @@ library(tidyverse)</code></pre>
 <h4>Getting the Data</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUmF3SGF0ZTIwMTggPC0gb3Blbnhsc3g6OnJlYWQueGxzeCh4bHN4RmlsZSA9IFwiSGF0ZUJ5U3RhdGUyMDE4Lnhsc3hcIilcblJhd0hhdGUyMDE3IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkhhdGVCeVN0YXRlMjAxNy54bHN4XCIpXG5SYXdIYXRlMjAxNiA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJIYXRlQnlTdGF0ZTIwMTYueGxzeFwiKVxuUmF3SGF0ZTIwMTUgPC0gb3Blbnhsc3g6OnJlYWQueGxzeCh4bHN4RmlsZSA9IFwiSGF0ZUJ5U3RhdGUyMDE1Lnhsc3hcIilcblJhd0hhdGUyMDE0IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkhhdGVCeVN0YXRlMjAxNC54bHN4XCIpXG5SYXdIYXRlMjAxMyA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJIYXRlQnlTdGF0ZTIwMTMueGxzeFwiKVxuUmF3SGF0ZTIwMTIgPC0gb3Blbnhsc3g6OnJlYWQueGxzeCh4bHN4RmlsZSA9IFwiSGF0ZUJ5U3RhdGUyMDEyLnhsc3hcIilcblJhd0hhdGUyMDExIDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkhhdGVCeVN0YXRlMjAxMS54bHN4XCIpXG5SYXdIYXRlMjAxMCA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJIYXRlQnlTdGF0ZTIwMTAueGxzeFwiKVxuUmF3SGF0ZTIwMDkgPC0gb3Blbnhsc3g6OnJlYWQueGxzeCh4bHN4RmlsZSA9IFwiSGF0ZUJ5U3RhdGUyMDA5Lnhsc3hcIilcblJhd0hhdGUyMDA4IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkhhdGVCeVN0YXRlMjAwOC54bHN4XCIpXG5cbiMgTWFraW5nIGEgbGlzdCBvZiBIYXRlIGNyaW1lIGRhdGEgZnJhbWVzIHRvIG1ha2UgZnV0dXJlIHRhc2tzIGVhc2llclxuI0hhdGVUYWJsZUxpc3QgPC0gYmFzZTo6bGlzdChSYXdIYXRlMjAwOCxcbiAjICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAwOSxcbiAgIyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxMCxcbiAgICMgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxMSxcbiAgICAjICAgICAgICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxMixcbiAgICAgIyAgICAgICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxMyxcbiAgICAgICMgICAgICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxNCxcbiAgICAgICAjICAgICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxNCxcbiAgICAgICAgIyAgICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxNSxcbiAgICAgICAgICMgICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxNixcbiAgICAgICAgICAjICAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxNyxcbiAgICAgICAgICAgIyAgICAgICAgICAgICAgICAgICAgICBSYXdIYXRlMjAxOClcblxuUmF3Q3JpbWUyMDE4IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMTgueGxzeFwiKVxuUmF3Q3JpbWUyMDE3IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMTcueGxzeFwiKVxuUmF3Q3JpbWUyMDE2IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMTYueGxzeFwiKVxuUmF3Q3JpbWUyMDE1IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMTUueGxzeFwiKVxuUmF3Q3JpbWUyMDE0IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMTQueGxzeFwiKVxuUmF3Q3JpbWUyMDEzIDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMTMueGxzeFwiKVxuUmF3Q3JpbWUyMDEyIDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMTIueGxzeFwiKVxuUmF3Q3JpbWUyMDExIDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMTEueGxzeFwiKVxuUmF3Q3JpbWUyMDEwIDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMTAueGxzeFwiKVxuUmF3Q3JpbWUyMDA5IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMDkueGxzeFwiKVxuUmF3Q3JpbWUyMDA4IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkNyaW1lQnlTdGF0ZTIwMDgueGxzeFwiKVxuXG5cbiNDcmltZVRhYmxlTGlzdCA8LSBiYXNlOjpsaXN0KFJhd0NyaW1lMjAwOCxcbiAjICAgICAgICAgICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAwOSxcbiAgIyAgICAgICAgICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxMCxcbiAgICMgICAgICAgICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxMSxcbiAgICAgICMgICAgICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxMixcbiAgICAjICAgICAgICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxMyxcbiAgICAgIyAgICAgICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxNCxcbiAgICAgICAjICAgICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxNCxcbiAgICAgICAgIyAgICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxNSxcbiAgICAgICAgICMgICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxNixcbiAgICAgICAgICAjICAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxNyxcbiAgICAgICAgICAgIyAgICAgICAgICAgICAgICAgIFJhd0NyaW1lMjAxOClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUmF3SGF0ZTIwMTggPC0gb3Blbnhsc3g6OnJlYWQueGxzeCh4bHN4RmlsZSA9IFwiSGF0ZUJ5U3RhdGUyMDE4Lnhsc3hcIilcblJhd0hhdGUyMDE3IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkhhdGVCeVN0YXRlMjAxNy54bHN4XCIpXG5SYXdIYXRlMjAxNiA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJIYXRlQnlTdGF0ZTIwMTYueGxzeFwiKVxuUmF3SGF0ZTIwMTUgPC0gb3Blbnhsc3g6OnJlYWQueGxzeCh4bHN4RmlsZSA9IFwiSGF0ZUJ5U3RhdGUyMDE1Lnhsc3hcIilcblJhd0hhdGUyMDE0IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkhhdGVCeVN0YXRlMjAxNC54bHN4XCIpXG5SYXdIYXRlMjAxMyA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJIYXRlQnlTdGF0ZTIwMTMueGxzeFwiKVxuUmF3SGF0ZTIwMTIgPC0gb3Blbnhsc3g6OnJlYWQueGxzeCh4bHN4RmlsZSA9IFwiSGF0ZUJ5U3RhdGUyMDEyLnhsc3hcIilcblJhd0hhdGUyMDExIDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkhhdGVCeVN0YXRlMjAxMS54bHN4XCIpXG5SYXdIYXRlMjAxMCA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJIYXRlQnlTdGF0ZTIwMTAueGxzeFwiKVxuUmF3SGF0ZTIwMDkgPC0gb3Blbnhsc3g6OnJlYWQueGxzeCh4bHN4RmlsZSA9IFwiSGF0ZUJ5U3RhdGUyMDA5Lnhsc3hcIilcblJhd0hhdGUyMDA4IDwtIG9wZW54bHN4OjpyZWFkLnhsc3goeGxzeEZpbGUgPSBcIkhhdGVCeVN0YXRlMjAwOC54bHN4XCIpXG5cblJhd0NyaW1lMjAxOCA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDE4Lnhsc3hcIilcblJhd0NyaW1lMjAxNyA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDE3Lnhsc3hcIilcblJhd0NyaW1lMjAxNiA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDE2Lnhsc3hcIilcblJhd0NyaW1lMjAxNSA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDE1Lnhsc3hcIilcblJhd0NyaW1lMjAxNCA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDE0Lnhsc3hcIilcblJhd0NyaW1lMjAxMyA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDEzLnhsc3hcIilcblJhd0NyaW1lMjAxMiA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDEyLnhsc3hcIilcblJhd0NyaW1lMjAxMSA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDExLnhsc3hcIilcblJhd0NyaW1lMjAxMCA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDEwLnhsc3hcIilcblJhd0NyaW1lMjAwOSA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDA5Lnhsc3hcIilcblJhd0NyaW1lMjAwOCA8LSBvcGVueGxzeDo6cmVhZC54bHN4KHhsc3hGaWxlID0gXCJDcmltZUJ5U3RhdGUyMDA4Lnhsc3hcIilcblxuYGBgIn0= -->
 <pre class="r"><code>RawHate2018 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;HateByState2018.xlsx&quot;)
 RawHate2017 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;HateByState2017.xlsx&quot;)
 RawHate2016 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;HateByState2016.xlsx&quot;)
@@ -1787,20 +1787,6 @@ RawHate2010 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;HateByState2010.xlsx&quot
 RawHate2009 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;HateByState2009.xlsx&quot;)
 RawHate2008 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;HateByState2008.xlsx&quot;)
 
-# Making a list of Hate crime data frames to make future tasks easier
-#HateTableList &lt;- base::list(RawHate2008,
- #                                RawHate2009,
-  #                               RawHate2010,
-   #                              RawHate2011,
-    #                             RawHate2012,
-     #                            RawHate2013,
-      #                           RawHate2014,
-       #                          RawHate2014,
-        #                         RawHate2015,
-         #                        RawHate2016,
-          #                       RawHate2017,
-           #                      RawHate2018)
-
 RawCrime2018 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;CrimeByState2018.xlsx&quot;)
 RawCrime2017 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;CrimeByState2017.xlsx&quot;)
 RawCrime2016 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;CrimeByState2016.xlsx&quot;)
@@ -1812,20 +1798,7 @@ RawCrime2011 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;CrimeByState2011.xlsx&qu
 RawCrime2010 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;CrimeByState2010.xlsx&quot;)
 RawCrime2009 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;CrimeByState2009.xlsx&quot;)
 RawCrime2008 &lt;- openxlsx::read.xlsx(xlsxFile = &quot;CrimeByState2008.xlsx&quot;)
-
-
-#CrimeTableList &lt;- base::list(RawCrime2008,
- #                            RawCrime2009,
-  #                           RawCrime2010,
-   #                          RawCrime2011,
-      #                       RawCrime2012,
-    #                         RawCrime2013,
-     #                        RawCrime2014,
-       #                      RawCrime2014,
-        #                     RawCrime2015,
-         #                    RawCrime2016,
-          #                   RawCrime2017,
-           #                  RawCrime2018)</code></pre>
+</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -2101,7 +2074,7 @@ Hate2010 &lt;- Hate2010[-51,]</code></pre>
 <p>Now we join all the <code>Crime</code> tables together and all the <code>Hate</code> tables together into longitudinal data frames.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBKb2luaW5nIGFsbCBkYXRhXG5EZWNhZGVPZkNyaW1lIDwtXG4gIGZ1bGxfam9pbihDcmltZTIwMDgsIENyaW1lMjAwOSkgJT4lXG4gIGZ1bGxfam9pbihDcmltZTIwMTApICU+JVxuICBmdWxsX2pvaW4oQ3JpbWUyMDExKSAlPiVcbiAgZnVsbF9qb2luKENyaW1lMjAxMikgJT4lXG4gIGZ1bGxfam9pbihDcmltZTIwMTMpICU+JVxuICBmdWxsX2pvaW4oQ3JpbWUyMDE0KSAlPiVcbiAgZnVsbF9qb2luKENyaW1lMjAxNSkgJT4lXG4gIGZ1bGxfam9pbihDcmltZTIwMTYpICU+JVxuICBmdWxsX2pvaW4oQ3JpbWUyMDE3KSAlPiVcbiAgZnVsbF9qb2luKENyaW1lMjAxOCkgJT4lXG4gIHNlbGVjdCgtYyh0b3RhbCkpXG5cbkRlY2FkZU9mSGF0ZSA8LVxuICBmdWxsX2pvaW4oSGF0ZTIwMDgsIEhhdGUyMDA5KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDEwKSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDExKSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDEyKSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDEzKSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE0KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE1KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE2KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE3KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE4KSAlPiVcbiAgcmVwbGFjZV9uYShsaXN0KGdlbmRlciA9IDAsIGdlbmRlcklkZW50aXR5ID0gMCkpXG5cbmhlYWQoRGVjYWRlT2ZDcmltZSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBKb2luaW5nIGFsbCBkYXRhXG5EZWNhZGVPZkNyaW1lIDwtXG4gIGZ1bGxfam9pbihDcmltZTIwMDgsIENyaW1lMjAwOSkgJT4lXG4gIGZ1bGxfam9pbihDcmltZTIwMTApICU+JVxuICBmdWxsX2pvaW4oQ3JpbWUyMDExKSAlPiVcbiAgZnVsbF9qb2luKENyaW1lMjAxMikgJT4lXG4gIGZ1bGxfam9pbihDcmltZTIwMTMpICU+JVxuICBmdWxsX2pvaW4oQ3JpbWUyMDE0KSAlPiVcbiAgZnVsbF9qb2luKENyaW1lMjAxNSkgJT4lXG4gIGZ1bGxfam9pbihDcmltZTIwMTYpICU+JVxuICBmdWxsX2pvaW4oQ3JpbWUyMDE3KSAlPiVcbiAgZnVsbF9qb2luKENyaW1lMjAxOCkgJT4lXG4gIHNlbGVjdCgtYyh0b3RhbCkpXG5cbkRlY2FkZU9mSGF0ZSA8LVxuICBmdWxsX2pvaW4oSGF0ZTIwMDgsIEhhdGUyMDA5KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDEwKSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDExKSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDEyKSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDEzKSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE0KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE1KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE2KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE3KSAlPiVcbiAgZnVsbF9qb2luKEhhdGUyMDE4KSAlPiVcbiAgcmVwbGFjZV9uYShsaXN0KGdlbmRlciA9IDAsIGdlbmRlcklkZW50aXR5ID0gMCkpXG5cbmhlYWQoRGVjYWRlT2ZDcmltZSlcbmhlYWQoRGVjYWRlT2ZIYXRlKVxuYGBgIn0= -->
 <pre class="r"><code># Joining all data
 DecadeOfCrime &lt;-
   full_join(Crime2008, Crime2009) %&gt;%
@@ -2129,25 +2102,9 @@ DecadeOfHate &lt;-
   full_join(Hate2018) %&gt;%
   replace_na(list(gender = 0, genderIdentity = 0))
 
-head(DecadeOfCrime)</code></pre>
+head(DecadeOfCrime)
+head(DecadeOfHate)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6NiwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUJvMVN2VXNqUVJTZlRiSWJFL3c4L3dFTFN4UDhRTEFRemVKZGYxcWw5Sm1zdW1ReXM4eE8xQWlDTmxiK0JZSW9XSnpjTldkdllTa29uSENLRnJiV2V1MFYwWm0zTzJIZHlvSGg5Mzd2WStZM2I5N1MxK3BVc1Zva2hHUkoxckZJMWxZbWNSYStUMHhPVHhLU3l5aG1rUndwYU54U1djTTZyUFlnWWhUSUE0VVZhRUpNSFVYREJuU0R3dC9tek5BZUVBMWdJWVF4TDlhQStxdGNNTCtiVWVPVUM2aHpaZmZyNDl6RnExT3R5aDM5OXhPeGVuMlArTzNxQlhGdi8vbFc0OUxEYnhJdHJLdmNIVjFxVWpuZlJtZmxhVG5pTjhQSVhlZndEUG50d1c2eXpzM1B6cUQvNzQ4b2I4Z1pRZjcvb29KOGZPY1hvbFU2KzFCWCtQT0tlWTgybnVkK3VSbEQzcGs3UVQ2MUdKMlhuWi81b1BONE9kTDNTVXg5aTgyZzZZV3BMN0ZEQ2RJelBRNTQwS0lnZmM1aVQrK0d6Nm5INUlMd215YXJMeEE4OElSc0o1MDlRR21TNTlvZWlKU0FndUNiWlNPaVQrMU0zRTRucmJTbUJzTW9OYzVpSFNTVVY0V3FWNnlUS3NuelFNdFdSWm5rNUhWSFVxUWNBeTJtbGRSTHRmVVdhNVFtOUFVWWpwYXhyVmlwRlorWnNQWDFtYmRVT3gyUHJmbk1OTUZXNCs1Um8xQzlPNFExRSt0WHpjQmVsQVBoTTJrZXFieGhXWElKdER2M25Cb1BQcHQwM2dFdHIxVGdqQU1BQUE9PSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["state"],"name":[1],"type":["chr"],"align":["left"]},{"label":["population"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["violentCrime"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["propertyCrime"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["allCrime"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["year"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"alabama","2":"4661900","3":"21111","4":"190343","5":"211454","6":"2008","_rn_":"1"},{"1":"alaska","2":"686293","3":"4474","4":"20124","5":"24598","6":"2008","_rn_":"2"},{"1":"arizona","2":"6500180","3":"29059","4":"278920","5":"307979","6":"2008","_rn_":"3"},{"1":"arkansas","2":"2855390","3":"14374","4":"109508","5":"123882","6":"2008","_rn_":"4"},{"1":"california","2":"36756666","3":"185173","4":"1080747","5":"1265920","6":"2008","_rn_":"5"},{"1":"colorado","2":"4939456","3":"16946","4":"140725","5":"157671","6":"2008","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[6]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChEZWNhZGVPZkhhdGUpXG5gYGAifQ== -->
-<pre class="r"><code>head(DecadeOfHate)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6OCwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUJwMVRTMDRETVF6MTlET2RWcUtBWU1rVnFFUVJFcXdvZ2cwclBxdnVpcGtKYmRRMGdXUXFQcXR1T1FWWDRBZ2NpUk1Bbm80enBWVWxLaXhGejgveFMreDhycys2KzQxdUF3REtVQTRES0ZmSmhmRDBjcTk5MEFhb2xJZ0ZVSUY2aGsrVXRVVk9SR01qUytPSkdpcTh4UkV5RFltNklSYVRWcjRZN1dtRWRvamFvV1BlaUZISk8yTzFMREppbzR6RnhKRGZ6SmJyN01EVU90dU12VW1PVjR5dkhPOStBRnV1WTFMZ0NXUEVhRzl5UElTbHV1TlB6anRpYkRNK3ZDL1Z3Ui9XMlppdnA5anZqZXRZRVZmZGI0bjlVemYzREtvYVI4SkIvZ1FpSDNRcHBvSkowMklzZWlJZGFCbkw5Tm5mcXhWSzlxWFJ6RGVkZUJxanVyQlNhQkxQSmhxSmRIZ3IxVXhhZVJaby9ldnFDNTBJejVvNU8wOW9qU3gvdnRTNk5ZOHRYKzRhamRJa2J5aGM3Q21tSit0N0NvbzZNTVhXblNVOXNhOEZTYzNjWnpXVHFMVEZwL3BiSE5pRndQcFlaNVVrdS9GZ3JJZTdlOWtHMCtuY3ZCOXdwUUd2NmYwbzM3NzBEZk4vTHhTNkw3VS8rU3A5UktGOGhkUzN3LzdzVnN6ajlDeGE5MWJxMURkSlVkZEtUWXFxK0pGRytjaTBiZmo2QWR5dDdaWW1CQUFBIn0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["state"],"name":[1],"type":["chr"],"align":["left"]},{"label":["race_ethnicity"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["religion"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sexualOrientation"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["disability"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["year"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["gender"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["genderIdentity"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"alabama","2":"7","3":"2","4":"2","5":"0","6":"2008","7":"0","8":"0","_rn_":"1"},{"1":"alaska","2":"5","3":"2","4":"1","5":"0","6":"2008","7":"0","8":"0","_rn_":"2"},{"1":"arizona","2":"126","3":"34","4":"25","5":"0","6":"2008","7":"0","8":"0","_rn_":"3"},{"1":"arkansas","2":"70","3":"3","4":"18","5":"0","6":"2008","7":"0","8":"0","_rn_":"4"},{"1":"california","2":"800","3":"294","4":"283","5":"4","6":"2008","7":"0","8":"0","_rn_":"5"},{"1":"colorado","2":"99","3":"24","4":"24","5":"2","6":"2008","7":"0","8":"0","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
