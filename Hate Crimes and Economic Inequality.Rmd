@@ -23,7 +23,9 @@ library(tidyverse)
 ### Are Hate Crimes a Growing Problem in the U.S?
 To answer this question, we'll look at Hate Crime Data and General Crime Data From the FBI, from the previous decade (excluding the current year).
   
-#### Importing the data.
+  
+  
+#### Getting the Data
 ```{r, message=FALSE}
 RawHate2018 <- openxlsx::read.xlsx(xlsxFile = "HateByState2018.xlsx")
 RawHate2017 <- openxlsx::read.xlsx(xlsxFile = "HateByState2017.xlsx")
@@ -37,20 +39,6 @@ RawHate2010 <- openxlsx::read.xlsx(xlsxFile = "HateByState2010.xlsx")
 RawHate2009 <- openxlsx::read.xlsx(xlsxFile = "HateByState2009.xlsx")
 RawHate2008 <- openxlsx::read.xlsx(xlsxFile = "HateByState2008.xlsx")
 
-# Making a list of Hate crime data frames to make future tasks easier
-#HateTableList <- base::list(RawHate2008,
- #                                RawHate2009,
-  #                               RawHate2010,
-   #                              RawHate2011,
-    #                             RawHate2012,
-     #                            RawHate2013,
-      #                           RawHate2014,
-       #                          RawHate2014,
-        #                         RawHate2015,
-         #                        RawHate2016,
-          #                       RawHate2017,
-           #                      RawHate2018)
-
 RawCrime2018 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2018.xlsx")
 RawCrime2017 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2017.xlsx")
 RawCrime2016 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2016.xlsx")
@@ -63,19 +51,6 @@ RawCrime2010 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2010.xlsx")
 RawCrime2009 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2009.xlsx")
 RawCrime2008 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2008.xlsx")
 
-
-#CrimeTableList <- base::list(RawCrime2008,
- #                            RawCrime2009,
-  #                           RawCrime2010,
-   #                          RawCrime2011,
-      #                       RawCrime2012,
-    #                         RawCrime2013,
-     #                        RawCrime2014,
-       #                      RawCrime2014,
-        #                     RawCrime2015,
-         #                    RawCrime2016,
-          #                   RawCrime2017,
-           #                  RawCrime2018)
 ```
 
   
@@ -91,9 +66,9 @@ head(RawHate2008, 12)
 ```
   
   
-#### Tidying the FBI Data 
-
-Before anything can be done with the FBI data, we wrangle them into tidy format
+#### Tidying Up
+  
+Before anything can be done with the FBI data, we wrangle them into tidy format.
 ```{r}
 # Cleaning the Raw FBI Tables
 Crime2008 <- as.data.frame(RawCrime2008[-c(1:3),]) # removing header rows for general crime data
@@ -519,7 +494,7 @@ Hate2018 <- Hate2018 %>%
   select(-c(Flag))
 ```
   
-Some incomplete cleaning tasks that I couldn't debug slipped through the cracks, so here I employ "search and destroy" here.
+Some incomplete cleaning tasks that I couldn't debug slipped through the cracks, so here I employ "search and destroy" tacticts.
 ```{r}
 Crime2008 <- Crime2008 %>%
   filter(state != "puerto rico") %>%
@@ -547,8 +522,8 @@ Crime2018 <- filter(Crime2018, state != "puerto rico")
 Hate2010 <- Hate2010[-51,]
 ```
   
-Now we join all the `Crime` tables together and all the `Hate` tables together into longitudinal data tables
-```{r}
+Now we join all the `Crime` tables together and all the `Hate` tables together into longitudinal data frames.
+```{r, message = FALSE}
 # Joining all data
 DecadeOfCrime <-
   full_join(Crime2008, Crime2009) %>%
@@ -575,7 +550,9 @@ DecadeOfHate <-
   full_join(Hate2017) %>%
   full_join(Hate2018) %>%
   replace_na(list(gender = 0, genderIdentity = 0))
-  
+
+head(DecadeOfCrime)
+head(DecadeOfHate)
 ```
 
 ### EDA
