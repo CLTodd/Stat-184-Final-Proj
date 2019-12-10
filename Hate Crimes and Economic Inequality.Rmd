@@ -1,5 +1,5 @@
 ---
-title: "Economic Inequality and Hate Crimes"
+title: "Hate Crime Trends"
 author: "Candace Todd"
 date: "December 17, 2019"
 output: html_notebook
@@ -19,66 +19,262 @@ library(openxlsx)
 library(DataComputing)
 library(tidyverse)
 ```
-3
-spread or gather operation (or equivalent):
-use of regular expressions: 
-use of reduction and/or transformation functions: 
-use of user-defined functions: 
-use of loops and/or control flow: 
-use of machine learning
 
-3
-use of mulitple different geoms:  
-use of multiple aesthetics:  
-use of layered graphics:  
-use of leaflet maps:  
-use of decision tree or dendogram results:    
-
-
-
-mention 538 and https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrime
-
-Explanations, definitions, and clarifications of variable names and the codes used for the variables were provided by the [read me in FiveThirtyEight's repo glossary page](https://ucr.fbi.gov/hate-crime/2016/resource-pages/abouthatecrime).
-
-### How Did Economic Inequality Affect Hate Crime Rates Around the Country in 2016?
-To answer this question, we'll look at unemployment rates, poverty rates, Gini indices recorded for each state in the U.S in 2016 and compare them to each state's hate crime rates. The data used is from a combination of three sources: [FiveThirtyEight.com](https://fivethirtyeight.com/features/higher-rates-of-hate-crimes-are-tied-to-income-inequality/), [The U.S Federal Bureau of Investigation](https://ucr.fbi.gov/hate-crime/2016/tables/table-13/table_13_hate_crime_incidents_per_bias_motivation_and_quarter_by_state_and_agency_2016.xls/view), and [epi.org](https://www.epi.org/blog/poverty-declines-most-states-2016/).
+### Are Hate Crimes a Growing Problem in the U.S?
+To answer this question, we'll look at Hate Crime Data and General Crime Data From the FBI, from the previous decade (excluding the current year).
   
 #### Importing the data.
 ```{r, message=FALSE}
-#Importing the Data
-CrimeMotiveStateRaw <- openxlsx::read.xlsx(xlsxFile = "Table_13_Hate_Crime_Incidents_per_Bias_Motivation_and_Quarter_by_State_and_Agency_2016.xlsx")
+RawHate2018 <- openxlsx::read.xlsx(xlsxFile = "HateByState2018.xlsx")
+RawHate2017 <- openxlsx::read.xlsx(xlsxFile = "HateByState2017.xlsx")
+RawHate2016 <- openxlsx::read.xlsx(xlsxFile = "HateByState2016.xlsx")
+RawHate2015 <- openxlsx::read.xlsx(xlsxFile = "HateByState2015.xlsx")
+RawHate2014 <- openxlsx::read.xlsx(xlsxFile = "HateByState2014.xlsx")
+RawHate2013 <- openxlsx::read.xlsx(xlsxFile = "HateByState2013.xlsx")
+RawHate2012 <- openxlsx::read.xlsx(xlsxFile = "HateByState2012.xlsx")
+RawHate2011 <- openxlsx::read.xlsx(xlsxFile = "HateByState2011.xlsx")
+RawHate2010 <- openxlsx::read.xlsx(xlsxFile = "HateByState2010.xlsx")
+RawHate2009 <- openxlsx::read.xlsx(xlsxFile = "HateByState2009.xlsx")
+RawHate2008 <- openxlsx::read.xlsx(xlsxFile = "HateByState2008.xlsx")
 
-InequalityAndCrime538 <- readr::read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/hate-crimes/hate_crimes.csv")
+# Making a list of Hate crime data frames to make future tasks easier
+#HateTableList <- base::list(RawHate2008,
+ #                                RawHate2009,
+  #                               RawHate2010,
+   #                              RawHate2011,
+    #                             RawHate2012,
+     #                            RawHate2013,
+      #                           RawHate2014,
+       #                          RawHate2014,
+        #                         RawHate2015,
+         #                        RawHate2016,
+          #                       RawHate2017,
+           #                      RawHate2018)
 
-PovertyByState <- readr::read_csv("State Poverty Levels 2016.txt")
+RawCrime2018 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2018.xlsx")
+RawCrime2017 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2017.xlsx")
+RawCrime2016 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2016.xlsx")
+RawCrime2015 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2015.xlsx")
+RawCrime2014 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2014.xlsx")
+RawCrime2013 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2013.xlsx")
+RawCrime2012 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2012.xlsx")
+RawCrime2011 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2011.xlsx")
+RawCrime2010 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2010.xlsx")
+RawCrime2009 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2009.xlsx")
+RawCrime2008 <- openxlsx::read.xlsx(xlsxFile = "CrimeByState2008.xlsx")
 
+
+#CrimeTableList <- base::list(RawCrime2008,
+ #                            RawCrime2009,
+  #                           RawCrime2010,
+   #                          RawCrime2011,
+      #                       RawCrime2012,
+    #                         RawCrime2013,
+     #                        RawCrime2014,
+       #                      RawCrime2014,
+        #                     RawCrime2015,
+         #                    RawCrime2016,
+          #                   RawCrime2017,
+           #                  RawCrime2018)
 ```
 
-Upon Inspection, we see that the FiveThirtyEight data and epi data are already tidy and have their variable correctly typed, but the FBI data is untidy, has awkward variable names, and has its variables typed incorrectly.
+  
+Upon Inspection, we see that the FBI data is untidy, has awkward variable names, and has its variables classed in an unhelpful way. When downloading the data from [ucr.fbi.gov](https://ucr.fbi.gov/hate-crime/) I visually verified that the format of each General Crime Table and each Hate Crime Table respectively are almost identical throughout the years, so all tables have been inspected even though here I only preview one table.
 ```{r}
-# Inspecting Inequality and Crime data from fivethirtyeight
-summary(InequalityAndCrime538)
-head(InequalityAndCrime538)
-# This table is already clean and tidy, although later on some variable names will be changed and some proportions will be converted to percents for convenience.
+# Inspecting a Raw FBI General Crime Table
+summary(RawCrime2008)
+head(RawCrime2008, 15)
 
-# Inspecting Poverty Rate by State data
-summary(PovertyByState)
-head(PovertyByState)
-# This table is already tidy, although later on some variable names might be changes for convention's sake.
-
-# Inspecting the CrimeMotivesStateRaw Table
-summary(CrimeMotiveStateRaw)
-head(CrimeMotiveStateRaw, 12)
+# Inspecting a Raw FBI Hate Crime Table
+summary(RawHate2008)
+head(RawHate2008, 12)
 ```
   
+  
 #### Tidying the FBI Data  
-Before anything could be done with the FBI data, the header and footer rows that seemed to previously serve as titles and footnotes had to be removed. Then, we can more easily see what each of the columns is supposed to stand for. 
+Before anything can be done with the FBI data, we wrangle them into tidy format
 ```{r}
-# Cleaning the CrimeMotivesStateRaw Table
-CrimeMotiveState <- as.data.frame(CrimeMotiveStateRaw[-c(1:5),]) # removing header rows
-rownames(CrimeMotiveState) <- 1:nrow(CrimeMotiveState) # re-indexing the rows just because it was bothering me
-head(CrimeMotiveState, 4)
+# Cleaning the Raw FBI Tables
+Crime2008 <- as.data.frame(RawCrime2008[-c(1:3),]) # removing header rows for general crime data
+Crime2009 <- as.data.frame(RawCrime2009[-c(1:3),])
+Crime2010 <- as.data.frame(RawCrime2010[-c(1:3),])
+Crime2011 <- as.data.frame(RawCrime2011[-c(1:3),])
+Crime2012 <- as.data.frame(RawCrime2012[-c(1:3),])
+Crime2013 <- as.data.frame(RawCrime2013[-c(1:3),])
+Crime2014 <- as.data.frame(RawCrime2014[-c(1:3),])
+Crime2015 <- as.data.frame(RawCrime2015[-c(1:3),])
+Crime2016 <- as.data.frame(RawCrime2016[-c(1:3),])
+Crime2017 <- as.data.frame(RawCrime2017[-c(1:3),])
+Crime2018 <- as.data.frame(RawCrime2018[-c(1:3),])
+
+Hate2008 <- as.data.frame(RawHate2008[-c(1:3),]) # removing header rows for hate crime data
+Hate2009 <- as.data.frame(RawHate2009[-c(1:3),])
+Hate2010 <- as.data.frame(RawHate2010[-c(1:3),])
+Hate2011 <- as.data.frame(RawHate2011[-c(1:4),])
+Hate2012 <- as.data.frame(RawHate2012[-c(1:5),])
+Hate2013 <- as.data.frame(RawHate2013[-c(1:5),])
+Hate2014 <- as.data.frame(RawHate2014[-c(1:5),])
+Hate2015 <- as.data.frame(RawHate2015[-c(1:5),])
+Hate2016 <- as.data.frame(RawHate2016[-c(1:5),])
+Hate2017 <- as.data.frame(RawHate2017[-c(1:5),])
+Hate2018 <- as.data.frame(RawHate2018[-c(1:5),])
+
+# Verifying code
+head(Crime2008, 5)
+head(Hate2008, 5)
 ```
+
+*Note: To avoid bulkiness of code, from here on out code chunks with repetitive actions that apply to the whole set of Crime or Hate tables in an identical manner (like above) will be suppressed. An example of the task being performed will be shown explicitly on one table from each category, but the code chunk with the same task being done on the other 11 tables will be hidden. However, all code will be visible in the .Rmd*  
+*If all of the tables had been formatted identically, I would have used a for loop or an apply() function to wrangle multiple data sets, but because of slight variation in formatting from year to year I was more comfortable with this method of wrangling.*
+  
+Continuing the wrangling:
+```{r}
+
+rownames(Crime2008) <- 1:nrow(Crime2008) # re-numbering the rows
+rownames(Hate2008) <- 1:nrow(Hate2008)
+
+#Removing rows that appear to be footnotes
+Crime2008 <- as.data.frame(Crime2008[-c(500:504),])
+Hate2008 <- as.data.frame(Hate2008[-c(2388:2390),])
+
+tail(Crime2008, 5)
+tail(Hate2008, 5)
+
+#Renaming the useful columns, re-classing variabels, and dropping (ignoring) columns that aren't of interest to the research question
+Crime2008 <-
+Crime2008 %>%
+  transmute(state = tolower(`Table.5`), # making all lowercase for consistency's sake, because some tables have states in all caps
+            total = as.numeric(X2), #        In the raw data, the `X2` column actually represents the area of the state where the crim occured,
+            population = as.numeric(X4), #   but we're only going to end up using the row with the state totals so we're renaming it `total` now.
+            violentCrime = as.numeric(X5),#     All other crimes listed are a subset of violent or property crimes (according to the FBI website),
+            propertyCrime = as.numeric(X10),#   so we'll only keep these two
+            allCrime = (violentCrime + propertyCrime) # Creating a variable I anticipate using in the future
+            )
+Hate2008 <-
+Hate2008 %>%
+  transmute(state = tolower(`Table.13`),
+            race_ethnicity = (as.numeric(X4) + as.numeric(X7)), # Race/Ethnicity/Ancestry is one column in later years so we combine them here
+            religion = as.numeric(X5),
+            sexualOrientation = as.numeric(X6),
+            disability = as.numeric(X8)
+            )
+str(Crime2008)
+str(Hate2008)
+```
+
+
+```{r, echo = FALSE, results = "hide"}
+#Removing Footnotes
+Crime2009 <- as.data.frame(Crime2009[-c(496:501),])
+Crime2010 <- as.data.frame(Crime2010[-c(504:507),])
+Crime2011 <- as.data.frame(Crime2011[-c(512:515),])
+Crime2012 <- as.data.frame(Crime2012[-c(503:506),])
+Crime2013 <- as.data.frame(Crime2013[-c(508:516),])
+Crime2014 <- as.data.frame(Crime2014[-c(506:513),])
+Crime2015 <- as.data.frame(Crime2015[-c(503:510),])
+Crime2016 <- as.data.frame(Crime2016[-c(502:509),])
+Crime2017 <- as.data.frame(Crime2017[-c(505:509),])
+Crime2018 <- as.data.frame(Crime2018[-c(507:512),])
+
+Hate2009 <- as.data.frame(Hate2009[-c(2275:2278),])
+Hate2010 <- as.data.frame(Hate2010[-c(2188:2190),])
+Hate2011 <- as.data.frame(Hate2011[-c(2184:2187),])
+Hate2012 <- as.data.frame(Hate2012[-c(1957:1960),])
+Hate2013 <- as.data.frame(Hate2013[-c(2071:2074),])
+Hate2014 <- as.data.frame(Hate2014[-c(1896:1898),])
+Hate2015 <- as.data.frame(Hate2015[-c(1981:1985),])
+Hate2016 <- as.data.frame(Hate2016[-c(2017:2019),])
+Hate2017 <- as.data.frame(Hate2017[-c(2298:2300),])
+Hate2018 <- as.data.frame(Hate2018[-c(2283:2286),])
+
+#Renaming the useful columns, re-classing variabels, and dropping (ignoring) columns that aren't of interest to the research question
+Crime2009 <- Crime2009 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed, 
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X10),
+  allCrime = (violentCrime + propertyCrime))
+
+Crime2010 <- Crime2010 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed, 
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X10),
+  allCrime = (violentCrime + propertyCrime))
+
+Crime2011 <- Crime2011 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed, 
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X10),
+  allCrime = (violentCrime + propertyCrime))
+
+Crime2012 <- Crime2012 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed, 
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X10),
+  allCrime = (violentCrime + propertyCrime))
+
+Crime2013 <- Crime2013 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X11),
+  allCrime = (violentCrime + propertyCrime))
+
+Crime2014 <- Crime2014 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X11),
+  allCrime = (violentCrime + propertyCrime))
+
+Crime2015 <- Crime2015 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X11),
+  allCrime = (violentCrime + propertyCrime))
+
+Crime2016 <- Crime2016 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X11),
+  allCrime = (violentCrime + propertyCrime))
+
+Crime2017 <- Crime2017 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X10),
+  allCrime = (violentCrime + propertyCrime))
+
+Crime2018 <- Crime2018 %>%
+  transmute(state = tolower(gsub("(\\d*\\,*\\d+)$", "", `Table.5`)), # Some state names have numbers on the end that need to be trimmed
+  total = as.numeric(X2), 
+  population = as.numeric(X4), 
+  violentCrime = as.numeric(X5),
+  propertyCrime = as.numeric(X10),
+  allCrime = (violentCrime + propertyCrime))
+
+
+
+
+#rownames(Crime2008) <- 1:nrow(Crime2008) # the rows just because it was bothering me
+#head(CrimeMotiveState, 3)
+```
+  
   
 The last few columns refer to quarterly breakdowns of the total counts, but aren't interested in these so we drop them. 
 ```{r}
@@ -88,6 +284,7 @@ CrimeMotiveState <-
 head(CrimeMotiveState, 6)
 ```
   
+  
 We can see that in the original Microsoft Excel format, each state had a breakdown of the cities where the crime occurred. This may be useful later to plot the exact location of the crimes on a U.S map, but for now we don't need this information. We do some wrangling to select for the total counts of hate crimes for each state.
   
 Here, we also rename columns from variable codes to plain English and correct the variable types.
@@ -95,27 +292,28 @@ Here, we also rename columns from variable codes to plain English and correct th
 CrimeMotiveState <-
   CrimeMotiveState %>%
   rename(state = `Table.13`, # renaming columns
-         race = X4,
+         race = X4, # These "X" variables refer to the bias of the Hate Crime perpetrator
          religion = X5,
          sexualOrientation = X6,
          disability = X7,
          gender = X8,
          genderIdentity = X9) %>%
-  mutate(Flag = ifelse(is.na(state), "drop", "keep")) %>%# assigning a yes or no value to rows that give the state totals that I'm interested in
+  mutate(Flag = ifelse(is.na(state), "drop", "keep")) %>%# assigning values to rows that give the state totals that I'm interested in
   filter(Flag == "keep") %>%
-  mutate(race = as.numeric(race),
+  mutate(race = as.numeric(race), # fixing the variable classes
          religion = as.numeric(religion),
          sexualOrientation = as.numeric(sexualOrientation),
          disability = as.numeric(disability),
          gender = as.numeric(gender),
          genderIdentity = as.numeric(genderIdentity),
-         totalHateCrimes = (race + religion + sexualOrientation + disability + gender + genderIdentity)) %>%
-  select(-c(Flag))
+         totalHateCrimes = (race + religion + sexualOrientation + disability + gender + genderIdentity)) %>% #adding a variable that I think will be useful later
+  select(-c(Flag)) #removing my flag variable, as it has served its purpose
  
 CrimeMotiveState <- CrimeMotiveState[-c(51:53),-c(2,3)] # removing unneccessary footer rows and empty columns
 rownames(CrimeMotiveState) <- 1:nrow(CrimeMotiveState) # ensuring rows are re-indexed appropriately
 head(CrimeMotiveState, 6) #checking results
 ```
+  
   
 Now that all of our data are tidy, we can join the 3 tables.
 ```{r}
@@ -137,7 +335,23 @@ Master <-
 head(Master)
 nrow(Master)
 names(Master)
+
   
 ```
   
-These variable names aren't very concise but they are descriptive, so I'm electing not to rename them at this point. 
+```{r}
+Test <- 
+  Master %>%
+  mutate(share_population_in_poverty = PercentInPoverty2016/100,
+         hate_crime_count = (hate_crimes_per_100k_splc *100000)/5,
+         fbi_hate_crime_count = avg_hatecrimes_per_100k_fbi *100000) %>%
+  select(hate_crime_count, totalHateCrimes,state,fbi_hate_crime_count)
+```
+
+```{r}
+mod1 <- lm(hate_crimes_per_100k_splc ~ share_population_in_poverty + median_household_income + share_unemployed_seasonal + share_population_with_high_school_degree + share_non_citizen + share_white_poverty + gini_index + share_non_white, data = Test )
+
+as.data.frame(mod1$coefficients)
+```
+
+
