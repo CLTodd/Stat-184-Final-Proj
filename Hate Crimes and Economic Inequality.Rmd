@@ -575,7 +575,7 @@ Recall our 2 approaches to the research question:
 **1. Are hate crimes happening more often as time goes on?**  
 **2. Are Hate Crimes becoming a larger proportion of all crimes committed?**  
 
-Let's tackle these in order.  
+Let's tackle these one at a time.  
 
 **Are hate crimes happening more often as time goes on?** To answer this, we need to wrangle our data to express Hate Crime rates for each of the states for every year. We'll calculate Hate Crime rates the same way we would calculate normal Crime Rates, except we'll only use the crime counts for Hate Crimes. This will gives us a measure of the number of hate crimes committed per 100,000 members of the population. Then, we'll plot these results to see if we can get a feel for the outcome of applying a linear model.
 ```{r}
@@ -649,13 +649,13 @@ HateProportions %>%
   ggplot(aes(x = year, y = propHate)) +
   geom_line(data = HateProportions, size = 1, color = "blue") +
   geom_line(data = filter(HateProportions, year <= 2014), size = 1, color = "darkblue") +
-  geom_point(size = 2, color = "blue") +
+  geom_point(data = HateProportions, size = 2, color = "blue") +
   geom_point(data = filter(HateProportions, year < 2014), size = 2, color = "darkblue") +
   ylab("Proportion of Crimes that were Hate Crimes") +
   scale_x_discrete(limits=c(2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018)) +
   xlab("Year")
 ```
-The proportion of each year's crimes that were Hate Crimes is very small, but this was expected as Hate crimes are a very specific and generally infrequent kind of crime. From 2014 to 2018, the proportion of crimes that were hate crimes increased by about 50%. Once again, we see a general decrease in hate crimes from 2008 to 2014 and an increase from 2008 to 2014. This plot seems to imply that Hate Crimes started becoming a larger proportion of all crimes committed in 2014. Now we can see that the post-2014 increase is much more consistent than the pre-2014 decrease. We'll apply another linear model, separating at 2014 again.
+The proportion of each year's crimes that were Hate Crimes is very small, but this was expected as Hate crimes are a very specific and generally infrequent kind of crime. Once again, we see a general decrease in hate crimes from 2008 to 2014 and an increase from 2008 to 2014. From 2014 to 2018, the proportion of crimes that were hate crimes increased by about 50%. The steepest increase in the proportion of crimes that were Hate Crimes occured in 2016.This plot seems to imply that Hate Crimes started becoming a larger proportion of all crimes committed in 2014. Now we can see that the post-2014 increase is much more consistent than the pre-2014 decrease. We'll apply another linear model, separating at 2014 again.
 
 ```{r}
 HP1 <- lm(propHate ~ year, data = filter(HateProportions, year < 2014))
@@ -671,170 +671,23 @@ summary(HP2)
 ```
 Once again, we see a negative slope pre-2014 and a positive slope post-2014. For the 2008 to 2014 data, there is a less than 0.1% chance that the coefficient is zero. From 2014 to 2018, that chance drops to 0.01%.
 
+Let's see if we observe any differences amongst the different kinds of Hate Crimes. Below, the Hate Crimes are separated by the bias of their perpetrator. We are still looking at national summaries.
 ```{r}
-#Do this for the national join? idk
-#  mutate(allHate = (race_ethnicity + religion + sexualOrientation + disability + gender + genderIdentity),
- #        hateRate = crime_rate(count = allHate, pop = population),
-  #       percHate = (allHate/allCrime),
-   #      percRace = (race_ethnicity/allCrime),
-    #     percReligion = (religion/allCrime),
-     #    percSexO = (sexualOrientation/allCrime),
-      #   percDis = (disability/allCrime),
-       #  percGender = (gender/allCrime),
-        # percGenderID = (genderIdentity/allCrime))
-
-Decade <-
-  full_join(DecadeOfHate, DecadeOfCrime, by = c("state", "year")) %>%
-  mutate(crimeRate = crime_rate(count = allCrime, pop = population),
-         
-
-# Inspecting new variables
-head(Decade)
-
-National <-
-  full_join(DecadeOfHate, DecadeOfCrime, by = c("year", "state")) 
-
-National <-
-  National %>%
-  mutate(country = "USA") %>% # adding this just so I remember these are totals for the whole country
-  group_by(country, year) %>%
-  summarise(population = sum(population, na.rm = TRUE),
-            allCrime = sum(allCrime, na.rm = TRUE),
-            race_ethnicity = sum(race_ethnicity, na.rm = TRUE),
-            religion = sum(religion, na.rm = TRUE),
-            sexualOrientation = sum(sexualOrientation, na.rm = TRUE),
-            disability = sum(disability, na.rm = TRUE),
-            gender = sum(gender, na.rm = TRUE),
-            genderIdentity = sum(genderIdentity, na.rm = TRUE)
-            ) %>%
-  mutate(crimeRate = crime_rate(count = allCrime, pop = population),
-         allHate = (race_ethnicity + religion + sexualOrientation + disability + gender + genderIdentity),
-         hateRate = crime_rate(count = allHate, pop = population),
-         percHate = (allHate/allCrime),
-         percRace = (race_ethnicity/allCrime),
-         percReligion = (religion/allCrime),
-         percSexO = (sexualOrientation/allCrime),
-         percDis = (disability/allCrime),
-         percGender = (gender/allCrime),
-         percGenderID = (genderIdentity/allCrime))
-
-National %>%
-  ggplot(aes(x = year)) +
-  geom_point(aes(y = hateRate, color = country)) +
-  #geom_jitter(aes(y = percRace, color = "purple")) +
-  #geom_jitter(aes(y = percReligion, color = "yellow")) +
-  #geom_jitter(aes(y = percSexO, color = "pink")) +
-  #geom_jitter(aes(y = percDis, color = "blue")) +
-  #geom_jitter(aes(y = percGender, color = "teal")) +
-  #geom_jitter(aes(y = percGenderID, color = "green")) +
-  stat_smooth(aes(y = hateRate, color = country, fill = "red")) + 
-  #geom_point(aes(x = 2008, shape = "*", y = )) +
-  theme(legend.position = "none")
-
-Decade %>%
-  filter(state != "district of columbia") %>%
-  ggplot(aes(x = year, color = state)) +
-  geom_jitter(aes(y = hateRate)) +
-  #geom_jitter(aes(y = percRace, color = "purple")) +
-  #geom_jitter(aes(y = percReligion, color = "yellow")) +
-  #geom_jitter(aes(y = percSexO, color = "pink")) +
-  #geom_jitter(aes(y = percDis, color = "blue")) +
-  #geom_jitter(aes(y = percGender, color = "teal")) +
-  #geom_jitter(aes(y = percGenderID, color = "green")) +
-  stat_smooth(aes(y = hateRate)) +
-  facet_wrap(~state) + 
-  theme(legend.position = "none")
-  #geom_point(aes(x = 2008, shape = "*", y = ))
-  
-
-```
-
-
-```{r}
-TotalHate <-
-  DecadeOfHate %>%
-  mutate(country = "USA") %>% # adding this just so I remember these are totals for the whole country
-  select(-c(year)) %>%
-  group_by(country) %>%
-  summarise(race_ethnicity = sum(race_ethnicity),
-            religion = sum(religion),
-            sexualOrientation = sum(sexualOrientation),
-            disability = sum(disability),
-            gender = sum(gender),
-            genderIdentity = sum(genderIdentity))
-
-TotalHate
-
-#incomplete for loop
-for (s in state.name){ #loops for every state
-  currentState <-
-    Decade %>%
-    filter(state == s) %>%
-    arrange(year)
-  for (i in 1:nrow(currentState)){ #loops for every year
-    currentYear <- currentState[i,6]
-    if (currentYear == 2008){
-    }else{
-      
-      Growths[n,1] <- s
-      Growths[(n, 2] <- y
-      Growths[n,3] <-growth_rate(current = National[i,13], past = National[(i-1),13])
-    } 
-    n <- n + 1
-    #Decade[i,16] <- growth_rate(current = National[i,13], past = National[(i-1),13])
-  #National[i,15] <- growth_rate(current = National[i,11], past = National[(i-1),11])
-    }
-  
-}
-
-National <-
-  full_join(DecadeOfHate, DecadeOfCrime, by = c("year", "state")) 
-
-National <-
-  National %>%
-  mutate(country = "USA") %>% # adding this just so I remember these are totals for the whole country
-  group_by(country, year) %>%
-  summarise(population = sum(population, na.rm = TRUE),
-            allCrime = sum(allCrime, na.rm = TRUE),
-            race_ethnicity = sum(race_ethnicity, na.rm = TRUE),
-            religion = sum(religion, na.rm = TRUE),
-            sexualOrientation = sum(sexualOrientation, na.rm = TRUE),
-            disability = sum(disability, na.rm = TRUE),
-            gender = sum(gender, na.rm = TRUE),
-            genderIdentity = sum(genderIdentity, na.rm = TRUE)
-            ) %>%
-  mutate(crimeRate = crime_rate(count = allCrime, pop = population),
-         allHate = (race_ethnicity + religion + sexualOrientation + disability + gender + genderIdentity),
-         hateRate = crime_rate(count = allHate, pop = population),
-         hateGrowth = as.numeric(NA),
-         crimeGrowth = as.numeric(NA))
-  
-#For loop will calculate the growth rate for the crime rates and hate crime rates respectively
-for (i in 2:nrow(National)){
-  National[i,14] <- growth_rate(current = National[i,13], past = National[(i-1),13])
-  National[i,15] <- growth_rate(current = National[i,11], past = National[(i-1),11])
-}
-
-National
-
-  
-```
-
-
-```{r}
-National %>%
-  ggplot(aes(x = year)) +
-  ylim(0,11) +
-  geom_boxplot(mapping = aes(group = year, y = hateRate), data = Decade, outlier.color = "orange", outlier.alpha = 0.2, colour = "orange") +
-  ylab("National Hate-Crime Rate") +
+HateProportions %>%
+  gather(key = bias, value = prop, propRace, propReligion, propSexO, propGender, propGenderID, propDis) %>%
+  ggplot(aes(x = year, y = prop)) +
+  geom_line(size = 1, aes(color = bias)) +
+  geom_point(size = 2, aes(color = bias)) +
+  ylab("Proportion of All Crimes that were Hate Crimes") +
   scale_x_discrete(limits=c(2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018)) +
   xlab("Year") +
-  stat_smooth(aes(y = hateRate)) +
-  theme(legend.position = "none") +
-  geom_jitter(data = Decade, mapping = aes(y = hateRate), alpha = 0.2, colour = "orange") +
-  ggtitle("Hate-Crime Rates over the Past Decade")
+  geom_line(data = HateProportions, aes(x = year, y = propHate), size = 1, color = "blue") +
+  geom_line(data = filter(HateProportions, year <= 2014), aes(x = year, y = propHate), size = 1, color = "darkblue") +
+  geom_point(data = HateProportions, aes(x = year, y = propHate), size = 2, color = "blue") +
+  geom_point(data = filter(HateProportions, year < 2014), aes(x = year, y = propHate), size = 2, color = "darkblue")
+  
 ```
-
+It appears that post-2014 every kind of Hate Crime either became a larger proportion of all crimes committed or stayed the same.
 
 ### Conclusion
 
