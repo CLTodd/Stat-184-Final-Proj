@@ -678,39 +678,21 @@ HateProportions %>%
   ggplot(aes(x = year, y = prop)) +
   geom_line(size = 1, aes(color = bias)) +
   geom_point(size = 2, aes(color = bias)) +
-  ylab("Proportion of All Crimes that were Hate Crimes") +
+  ylab("Proportion Hate Crimes") +
   scale_x_discrete(limits=c(2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018)) +
   xlab("Year") +
+  scale_color_discrete(name = "Perpetrator's Bias", labels = c("Disability", "Gender", "Gender Identity", "Race", "Religion", "Sexual Orientation")) +
   geom_line(data = HateProportions, aes(x = year, y = propHate), size = 1, color = "blue") +
   geom_line(data = filter(HateProportions, year <= 2014), aes(x = year, y = propHate), size = 1, color = "darkblue") +
   geom_point(data = HateProportions, aes(x = year, y = propHate), size = 2, color = "blue") +
-  geom_point(data = filter(HateProportions, year < 2014), aes(x = year, y = propHate), size = 2, color = "darkblue")
+  geom_point(data = filter(HateProportions, year < 2014), aes(x = year, y = propHate), size = 2, color = "darkblue") +
+  ggtitle("Proportions of All Crimes in the U.S that were Hate Crimes; Yearly")
   
 ```
-It appears that post-2014 every kind of Hate Crime either became a larger proportion of all crimes committed or stayed the same.
+It appears that post-2014 every kind of Hate Crime either became a larger proportion of all crimes committed or stayed the same. Racial bias is a consistently dominant amongst the Hate Crimes committed. Religion and Sexual Orientation biases are next, and Gender, Gender Identity, and Disability biases are the least prominent.
 
 ### Conclusion
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+From this data, we can't see a clear trend over the past decade but it does seem like their is some important information help in the 2014-2018 data. Unfortunately, the strength of our conclusions is limited due to the inherent missingess that these data sets suffer from: all of the data is self reported by cities and states across the country. The FBI doesn't require any local governments to submit their crime data to the national government. This gives states and cities the ability to purposefully report less crime in certain areas that they want to make more desirable. In some years, certain states didn't submit any data at all. However it does seem evident that Hate Crimes are making up a larger proportion of all crimes committed in the United States in the most recent years. Hopefully a more complete data set can confirm or deny the intuition formed during this analysis.
 
 
 
