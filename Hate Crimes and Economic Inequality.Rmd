@@ -13,11 +13,10 @@ Explore intuition for the research questions before imposing formal structure (e
 Discover features in the data that influence modeling decisions
 
 ## Are Hate Crimes a Growing Problem in the U.S?
-In search of n answer, we'll approach this question in 3 ways:  
+In search of n answer, we'll approach this question in 2 ways:  
 
 **1. Are hate crimes happening more often as time goes on?**  
 **2. Are Hate Crimes becoming a larger proportion of all crimes committed?**  
-**3. Are Hate Crime rates growing? And, if so, are they growing at a faster rate than the general Crime Rate?**  
 
 To answer these questions, we'll look at Hate Crime Data and General Crime Data From the FBI, from the previous decade (excluding the current year).
   
@@ -571,11 +570,10 @@ head(DecadeOfHate)
 
 
 ### Analysis
-Recall our 3 approaches to the research question:  
+Recall our 2 approaches to the research question:  
 
 **1. Are hate crimes happening more often as time goes on?**  
 **2. Are Hate Crimes becoming a larger proportion of all crimes committed?**  
-**3. Are Hate Crime rates growing? And, if so, are they growing at a faster rate than the general Crime Rate?**  
 
 Let's tackle these in order.  
 
@@ -621,7 +619,7 @@ HR2$coefficients
 ```
 There doesn't appear to be a linear correlation between the year and the Hate Crime rates. Even though the Hate Crime rates do generally decrease prior to 2014 and increase afterward, the coefficients of the linear models aren't a significant size in either direction.  
 
-**Are Hate Crimes becoming a larger proportion of all crimes committed?** To answer this, we need to wrangle our data to express the proportiong of crimes that were Hate Crime rates for each of the states for every year. To make a legible plot, we'll use national yearly summaries instead of grouping data by state.
+**Are Hate Crimes becoming a larger proportion of all crimes committed?** To answer this, we need to wrangle our data to express the proportions of crimes that were Hate Crime rates for every year. To make a legible plot, we'll use national yearly summaries instead of grouping data by state.
 
 ```{r}
 HateProportions <-
@@ -657,13 +655,13 @@ HateProportions %>%
   scale_x_discrete(limits=c(2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018)) +
   xlab("Year")
 ```
-The proportion of each year's crimes that were hate crimes is very small, but this was expected as Hate crimes are a very specific and generally infrequent kind of crime. Once again, we see a general decrease in hate crimes from 2008 to 2014 and an increase from 2008 to 2014. This plot seems to imply that Hate Crimes started becoming a larger proportion of all crimes committed in 2014. Now we can see that the post-2014 increase is much more consistent than the pre-2014 decrease. From 2014 to 2018, the proportion of crimes that were hate crimes increased by about 50%. We'll apply another linear model, separating at 2014 again.
+The proportion of each year's crimes that were Hate Crimes is very small, but this was expected as Hate crimes are a very specific and generally infrequent kind of crime. From 2014 to 2018, the proportion of crimes that were hate crimes increased by about 50%. Once again, we see a general decrease in hate crimes from 2008 to 2014 and an increase from 2008 to 2014. This plot seems to imply that Hate Crimes started becoming a larger proportion of all crimes committed in 2014. Now we can see that the post-2014 increase is much more consistent than the pre-2014 decrease. We'll apply another linear model, separating at 2014 again.
 
 ```{r}
 HP1 <- lm(propHate ~ year, data = filter(HateProportions, year < 2014))
 HP2 <- lm(propHate ~ year, data = filter(HateProportions, year >= 2014))
 
-#Once again, the coefficients of both linear models are very small. However, this time we might be able to see some significance."
+#The coefficients of both linear models are very small. However, we still might be able to see some significance."
 
 #2008 to 2014
 summary(HP1)
@@ -672,14 +670,6 @@ summary(HP2)
 
 ```
 Once again, we see a negative slope pre-2014 and a positive slope post-2014. For the 2008 to 2014 data, there is a less than 0.1% chance that the coefficient is zero. From 2014 to 2018, that chance drops to 0.01%.
-a significance level of 0.01 indicates that there is less than a 0.1% chance that the coefficient might be equal to 0 and thus be insignificant.
-
-
-```{r}
-#Hate crime growth rates
-HateGrowthRate <-
-
-```
 
 ```{r}
 #Do this for the national join? idk
